@@ -11,12 +11,11 @@ class Percolation {
   private:
     const int N;
     UnionFind grid;
-    bool* openStatus;
+    bool* openStatus;  // An array that stores the open status of each site
     int openSitesCount = 0;
 
   public:
-    // Creates an n-by-n grid
-    Percolation(int n);
+    Percolation(int n);  // Creates an n-by-n grid
     ~Percolation();
 
     void open(int row, int col);

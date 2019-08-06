@@ -8,10 +8,10 @@ UnionFind::UnionFind(int n) : N(n) {
     throw invalid_argument("UnionFind: n should be positive!");
   }
 
-  root = new int[n];
-  size = new int[n];
+  root = new int[N];
+  size = new int[N];
 
-  for (int i = 0; i < n; ++i) {
+  for (int i = 0; i < N; ++i) {
     root[i] = i;
     size[i] = 1;
   }

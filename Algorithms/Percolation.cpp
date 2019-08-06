@@ -13,18 +13,18 @@ Percolation::Percolation(int n)
   }
 
   // All sites are initially blocked
-  for (int i = 0; i < n * n; ++i) {
+  for (int i = 0; i < N * N; ++i) {
     openStatus[i] = false;
   }
 
-  openStatus[n * n] = true;      // Open virtual top site
-  openStatus[n * n + 1] = true;  // Open virtual bottom site
+  openStatus[N * N] = true;      // Open virtual top site
+  openStatus[N * N + 1] = true;  // Open virtual bottom site
 
-  for (int i = 0; i < n; ++i) {
+  for (int i = 0; i < N; ++i) {
     // Connect virtual top site with each site in the first row
-    grid.connect(i, n * n);
+    grid.connect(i, N * N);
     // Connect virtual bottom site with each site in the last row
-    grid.connect(n * n - 1 - i, n * n + 1);
+    grid.connect(N * N - 1 - i, N * N + 1);
   }
 }
 

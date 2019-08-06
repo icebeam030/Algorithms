@@ -7,14 +7,13 @@ using namespace std;
 // Useful for dynamic connectivity, or percolation problems.
 class UnionFind {
   private:
-    int* root;  // Stores the root of each node
-    int* size;  // Stores the size of the trees
+    const int N;
+    int* root;  // An array that stores the root of each node
+    int* size;  // An array that stores the size of the trees
     int getRoot(int i);
 
   public:
-    const int N;
-    // Creates a system of n nodes
-    UnionFind(int n);
+    UnionFind(int n);  // Creates a system of n nodes
     ~UnionFind();
 
     bool isConnected(int a, int b);

@@ -57,12 +57,15 @@ void PercolationStats::run() {
       blockedSites.pop_back();
     } while (!grid.percolates());  // Loop until the system percolates
 
+    // The percentage of open sites in the system is an estimate
+    // of the percolation threshold.
     double threshold = double(grid.numberOfOpenSites()) / N / N;
     thresholds.push_back(threshold);
 
     cout << "Trial " << t + 1 << " finished\n";
   }
 
+  // Print out some useful stats
   cout << "\nTrial finished, stats about simulated percolation threshold:\n\n";
   cout << "Mean: " << mean() << '\n';
   cout << "Standard deviation: " << stdDev() << '\n';
