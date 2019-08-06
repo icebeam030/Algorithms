@@ -3,9 +3,38 @@
 
 using namespace std;
 
+Percolation::Percolation(int n)
+  : N(n),
+    // Create two extra virtual sites at top and bottom
+    grid(UnionFind(n * n + 2)),
+    openStatus(new bool[n * n + 2]) {
+  if (n <= 0) {
+    throw invalid_argument("Percolation: n should be positive!");
+  }
+
+  // All sites are initially blocked
+  for (int i = 0; i < n * n; ++i) {
+    openStatus[i] = false;
+  }
+
+  openStatus[n * n] = true;      // Open virtual top site
+  openStatus[n * n + 1] = true;  // Open virtual bottom site
+
+  for (int i = 0; i < n; ++i) {
+    // Connect virtual top site with each site in the first row
+    grid.connect(i, n * n);
+    // Connect virtual bottom site with each site in the last row
+    grid.connect(n * n - 1 - i, n * n + 1);
+  }
+}
+
+Percolation::~Percolation() {
+  delete[] openStatus;
+}
+
 void Percolation::open(int row, int col) {
   if (row < 1 || row > N || col < 1 || col > N) {
-    throw invalid_argument("Percolation: row and col should be within [1, N]");
+    throw invalid_argument("Percolation: row and col should be within [1, N]!");
   }
 
   if (isOpen(row, col)) return;
@@ -36,7 +65,7 @@ void Percolation::open(int row, int col) {
 
 bool Percolation::isOpen(int row, int col) const {
   if (row < 1 || row > N || col < 1 || col > N) {
-    throw invalid_argument("Percolation: row and col should be within [1, N]");
+    throw invalid_argument("Percolation: row and col should be within [1, N]!");
   }
 
   int i = (row - 1) * N + col - 1;
@@ -45,7 +74,7 @@ bool Percolation::isOpen(int row, int col) const {
 
 bool Percolation::isFull(int row, int col) {
   if (row < 1 || row > N || col < 1 || col > N) {
-    throw invalid_argument("Percolation: row and col should be within [1, N]");
+    throw invalid_argument("Percolation: row and col should be within [1, N]!");
   }
 
   int i = (row - 1) * N + col - 1;

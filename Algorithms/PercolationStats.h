@@ -16,13 +16,7 @@ class PercolationStats {
 
   public:
     // Perform t trials on an n-by-n grid
-    PercolationStats(int n, int t) : N(n), T(t) {
-      if (n <= 0 || t <= 0) {
-        throw invalid_argument("PercolationStats: n and t should be positive");
-      }
-
-      run();
-    }
+    PercolationStats(int n, int t);
 
     // Some stats of simulated percolation thresholds
     double mean() const;          // Sample mean

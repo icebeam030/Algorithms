@@ -15,33 +15,9 @@ class Percolation {
     int openSitesCount = 0;
 
   public:
-    // Creates an n-by-n grid, and 2 extra virtual sites at top and bottom
-    Percolation(int n)
-        : N(n),
-          grid(UnionFind(n * n + 2)),
-          openStatus(new bool[n * n + 2]) {
-      if (n <= 0) {
-        throw invalid_argument("Percolation: n should be positive");
-      }
-
-      // All sites are initially blocked
-      for (int i = 0; i < n * n; ++i) {
-        openStatus[i] = false;
-      }
-
-      openStatus[n * n] = true;      // Open virtual top site
-      openStatus[n * n + 1] = true;  // Open virtual bottom site
-
-      for (int i = 0; i < n; ++i) {
-        // Connect virtual top site with each site in the first row
-        grid.connect(i, n * n);
-        // Connect virtual bottom site with each site in the last row
-        grid.connect(n * n - 1 - i, n * n + 1);
-      }
-    }
-    ~Percolation() {
-      delete[] openStatus;
-    }
+    // Creates an n-by-n grid
+    Percolation(int n);
+    ~Percolation();
 
     void open(int row, int col);
     bool isOpen(int row, int col) const;

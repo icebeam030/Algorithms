@@ -3,10 +3,20 @@
 #include <chrono>
 #include <random>
 #include <math.h>
+
 #include "PercolationStats.h"
 #include "Percolation.h"
 
 using namespace std;
+
+PercolationStats::PercolationStats(int n, int t)
+    : N(n), T(t) {
+  if (n <= 0 || t <= 0) {
+    throw invalid_argument("PercolationStats: n and t should be positive!");
+  }
+
+  run();
+}
 
 void PercolationStats::run() {
   cout << "Performing " << T << " trials on a " << N << "x" << N << " grid\n";
@@ -26,14 +36,14 @@ void PercolationStats::run() {
       blockedSites.push_back(i);
     }
 
-    // Initialize random number generator and shuffle the vector
+    // Initialise random number generator and shuffle the vector
     // Note mt19937_64 might be needed if you test on really large N's
     int seed = chrono::system_clock::now().time_since_epoch().count();
     mt19937 generator(seed);
     shuffle(blockedSites.begin(), blockedSites.end(), generator);
 
     do {
-      // Randomly choose a blocked site
+      // Randomly choose a blocked site at index i
       uniform_int_distribution<int> distribution(0, blockedSites.size() - 1);
       int i = distribution(generator);
 
@@ -62,8 +72,8 @@ void PercolationStats::run() {
 
 double PercolationStats::mean() const {
   double sum = 0.0;
-  for (int i = 0; i < T; ++i) {
-    sum += thresholds[i];
+  for (double threshold : thresholds) {
+    sum += threshold;
   }
   return sum / T;
 }
@@ -71,8 +81,8 @@ double PercolationStats::mean() const {
 double PercolationStats::stdDev() const {
   double s_squared = 0.0;
   double m = mean();
-  for (int i = 0; i < T; ++i) {
-    s_squared += (thresholds[i] - m) * (thresholds[i] - m);
+  for (double threshold : thresholds) {
+    s_squared += (threshold - m) * (threshold - m);
   }
   return sqrt(s_squared / (T - 1));
 }
