@@ -4,11 +4,10 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <time.h>
 
 #include "PercolationStats.h"
-#include "Stacks.h"
 #include "Queues.h"
+#include "Queues.cpp"
 
 using namespace std;
 
@@ -25,12 +24,18 @@ int main() {
     cerr << "Unknown Exception";
     return EXIT_FAILURE;
   }
-  // LinkedListStack queue;
-  // queue.push("Test");
-  // queue.push("Test");
-  // queue.push("Test");
-  // queue.push("Test");
-  // while (!queue.isEmpty()) {
-  //   cout << queue.pop() << '\n';
-  // }
+
+  ResizingArrayQueue<string> queue;
+  for (int i = 0; i < 4; ++i) {
+    queue.enqueue(to_string(i));
+  }
+  for (int i = 0; i < 3; ++i) {
+    cout << queue.dequeue() << '\n';
+  }
+  for (int i = 0; i < 2; ++i) {
+    queue.enqueue("2nd " + to_string(i));
+  }
+  while (!queue.isEmpty()) {
+    cout << queue.dequeue() << '\n';
+  }
 }
