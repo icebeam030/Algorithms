@@ -6,24 +6,24 @@
 #include <sstream>
 
 #include "PercolationStats.h"
-#include "Queues.h"
-#include "Queues.cpp"
+#include "ResizingArrays.h"
+#include "ResizingArrays.cpp"
 
 using namespace std;
 
 int main() {
-  try {
-    PercolationStats p(100, 40);
-  } catch (const invalid_argument& e) {
-    cerr << "Invalid argument: " << e.what() << '\n';
-    return EXIT_FAILURE;
-  } catch (const bad_alloc& e) {
-    cerr << "Memory Exception: " << e.what() << ". Try using smaller arguments\n";
-    return EXIT_FAILURE;
-  } catch (...) {
-    cerr << "Unknown Exception";
-    return EXIT_FAILURE;
-  }
+  // try {
+  //   PercolationStats p(100, 40);
+  // } catch (const invalid_argument& e) {
+  //   cerr << "Invalid argument: " << e.what() << '\n';
+  //   return EXIT_FAILURE;
+  // } catch (const bad_alloc& e) {
+  //   cerr << "Memory Exception: " << e.what() << ". Try using smaller arguments\n";
+  //   return EXIT_FAILURE;
+  // } catch (...) {
+  //   cerr << "Unknown Exception";
+  //   return EXIT_FAILURE;
+  // }
 
   ResizingArrayQueue<string> queue;
   for (int i = 0; i < 4; ++i) {

@@ -154,15 +154,15 @@
     <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="Percolation.cpp" />
     <ClCompile Include="PercolationStats.cpp" />
-    <ClCompile Include="Queues.cpp" />
-    <ClCompile Include="Stacks.cpp" />
+    <ClCompile Include="ResizingArrays.cpp" />
+    <ClCompile Include="LinkedLists.cpp" />
     <ClCompile Include="UnionFind.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Percolation.h" />
     <ClInclude Include="PercolationStats.h" />
-    <ClInclude Include="Queues.h" />
-    <ClInclude Include="Stacks.h" />
+    <ClInclude Include="ResizingArrays.h" />
+    <ClInclude Include="LinkedLists.h" />
     <ClInclude Include="UnionFind.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

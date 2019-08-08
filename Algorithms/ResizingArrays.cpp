@@ -1,58 +1,68 @@
-// Include BOTH this file and Queues.h in the file
+// Include BOTH this file and ResizingArrays.h in the file
 // where you want to instantiate a template instance.
 
 #include <stdexcept>
-#include "Queues.h"
+#include "ResizingArrays.h"
 
-// Linked list implementation
+// Resizing array stack
 template <class T>
-LinkedListQueue<T>::~LinkedListQueue() {
-  while (!isEmpty()) {
-    Node* current = head;
-    head = head->next;
-    delete current;
-  }
+ResizingArrayStack<T>::~ResizingArrayStack() {
+  delete[] array;
 }
 
 template <class T>
-void LinkedListQueue<T>::enqueue(T data) {
-  Node* oldTail = tail;
+void ResizingArrayStack<T>::resizeArray(int newCapacity) {
+  T* newArray = new T[newCapacity];
+  for (int i = 0; i < numberOfItems; ++i) {
+    newArray[i] = array[i];
+  }
 
-  tail = new Node;
-  tail->data = data;
-  tail->next = nullptr;
+  T* oldArray = array;
+  array = newArray;
+  delete[] oldArray;
 
+  capacity = newCapacity;
+}
+
+template <class T>
+void ResizingArrayStack<T>::push(T data) {
+  if (numberOfItems == capacity) {
+    resizeArray(2 * capacity);
+  }
+
+  array[numberOfItems++] = data;
+}
+
+template <class T>
+T ResizingArrayStack<T>::pop() {
   if (isEmpty()) {
-    head = tail;
-  } else {
-    oldTail->next = tail;
+    throw logic_error("Error: Poping from empty stack");
   }
+
+  if (numberOfItems == capacity / 4) {
+    resizeArray(capacity / 2);
+  }
+
+  return array[--numberOfItems];
 }
 
 template <class T>
-T LinkedListQueue<T>::dequeue() {
-  if (isEmpty()) {
-    throw logic_error("Error: Poping from empty queue");
-  }
-
-  T data = head->data;
-  Node* oldHead = head;
-  head = head->next;
-  delete oldHead;
-
-  if (isEmpty()) {
-    tail = nullptr;
-  }
-  return data;
+bool ResizingArrayStack<T>::isEmpty() const {
+  return numberOfItems == 0;
 }
 
 template <class T>
-bool LinkedListQueue<T>::isEmpty() const {
-  return head == nullptr;
+int ResizingArrayStack<T>::size() const {
+  return numberOfItems;
+}
+
+template <class T>
+int ResizingArrayStack<T>::maxSize() const {
+  return capacity;
 }
 
 
-// Resizing array implementation
+// Resizing array queue
 template <class T>
 ResizingArrayQueue<T>::~ResizingArrayQueue() {
   delete[] array;

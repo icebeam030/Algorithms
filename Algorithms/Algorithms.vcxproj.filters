@@ -27,10 +27,10 @@
     <ClCompile Include="UnionFind.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Stacks.cpp">
+    <ClCompile Include="LinkedLists.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Queues.cpp">
+    <ClCompile Include="ResizingArrays.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,10 +44,10 @@
     <ClInclude Include="PercolationStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Stacks.h">
+    <ClInclude Include="ResizingArrays.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Queues.h">
+    <ClInclude Include="LinkedLists.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
