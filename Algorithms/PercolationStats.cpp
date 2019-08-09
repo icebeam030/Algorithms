@@ -38,7 +38,7 @@ void PercolationStats::run() {
 
     // Initialise random number generator and shuffle the vector
     // Note mt19937_64 might be needed if you test on really large N's
-    int seed = chrono::system_clock::now().time_since_epoch().count();
+    int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
     mt19937 generator(seed);
     shuffle(blockedSites.begin(), blockedSites.end(), generator);
 
@@ -59,7 +59,7 @@ void PercolationStats::run() {
 
     // The percentage of open sites in the system is an estimate
     // of the percolation threshold.
-    double threshold = double(grid.numberOfOpenSites()) / N / N;
+    double threshold = static_cast<double>(grid.numberOfOpenSites()) / N / N;
     thresholds.push_back(threshold);
 
     cout << "Trial " << t + 1 << " finished\n";
