@@ -3,9 +3,9 @@
 
 using namespace std;
 
+// Create two extra virtual sites at top and bottom
 Percolation::Percolation(int n)
   : N(n),
-    // Create two extra virtual sites at top and bottom
     grid(UnionFind(n * n + 2)),
     openStatus(new bool[n * n + 2]) {
   if (n <= 0) {
