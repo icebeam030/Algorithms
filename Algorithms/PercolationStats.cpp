@@ -26,7 +26,7 @@ void PercolationStats::run() {
 
   // Run Monte-Carlo simulation T times
   for (int t = 0; t < T; ++t) {
-    // Initialize a percolation grid
+    // Initialise a percolation grid
     Percolation grid(N);
 
     // All sites are initially blocked

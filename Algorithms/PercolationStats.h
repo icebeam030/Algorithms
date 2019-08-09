@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include "Percolation.h"
 
 using namespace std;
 
