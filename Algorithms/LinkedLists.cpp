@@ -4,10 +4,10 @@
 #include <stdexcept>
 #include "LinkedLists.h"
 
-// Linked list stack
+// Linked list stack implementation
 template <class T>
 LinkedListStack<T>::~LinkedListStack() {
-  while (!isEmpty()) {
+  while (head != nullptr) {
     Node* current = head;
     head = head->next;
     delete current;
@@ -15,11 +15,13 @@ LinkedListStack<T>::~LinkedListStack() {
 }
 
 template <class T>
-void LinkedListStack<T>::push(T data) {
+void LinkedListStack<T>::push(const T&& data) {
   Node* newNode = new Node;
   newNode->data = data;
   newNode->next = head;
   head = newNode;
+
+  ++numberOfItems;
 }
 
 template <class T>
@@ -32,6 +34,8 @@ T LinkedListStack<T>::pop() {
   Node* oldHead = head;
   head = head->next;
   delete oldHead;
+
+  --numberOfItems;
   return data;
 }
 
@@ -40,11 +44,30 @@ bool LinkedListStack<T>::isEmpty() const {
   return head == nullptr;
 }
 
+template <class T>
+int LinkedListStack<T>::size() const {
+  return numberOfItems;
+}
 
-// Linked list queue
+template <class T>
+typename LinkedListStack<T>::Iterator LinkedListStack<T>::begin() const {
+  return Iterator(head);
+}
+
+template <class T>
+typename LinkedListStack<T>::Iterator LinkedListStack<T>::end() const {
+  Node* tail = head;
+  while (tail != nullptr) {
+    tail = tail->next;
+  }
+  return Iterator(tail);
+}
+
+
+// Linked list queue implementation
 template <class T>
 LinkedListQueue<T>::~LinkedListQueue() {
-  while (!isEmpty()) {
+  while (head != nullptr) {
     Node* current = head;
     head = head->next;
     delete current;
@@ -52,7 +75,7 @@ LinkedListQueue<T>::~LinkedListQueue() {
 }
 
 template <class T>
-void LinkedListQueue<T>::enqueue(T data) {
+void LinkedListQueue<T>::enqueue(const T&& data) {
   Node* oldTail = tail;
 
   tail = new Node;
@@ -64,6 +87,8 @@ void LinkedListQueue<T>::enqueue(T data) {
   } else {
     oldTail->next = tail;
   }
+
+  ++numberOfItems;
 }
 
 template <class T>
@@ -80,10 +105,27 @@ T LinkedListQueue<T>::dequeue() {
   if (isEmpty()) {
     tail = nullptr;
   }
+
+  --numberOfItems;
   return data;
 }
 
 template <class T>
 bool LinkedListQueue<T>::isEmpty() const {
   return head == nullptr;
+}
+
+template <class T>
+int LinkedListQueue<T>::size() const {
+  return numberOfItems;
+}
+
+template <class T>
+typename LinkedListQueue<T>::Iterator LinkedListQueue<T>::begin() const {
+  return Iterator(head);
+}
+
+template <class T>
+typename LinkedListQueue<T>::Iterator LinkedListQueue<T>::end() const {
+  return Iterator(tail->next);
 }

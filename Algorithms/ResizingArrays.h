@@ -16,12 +16,12 @@ class ResizingArrayStack {
     int capacity = 1;
     T* array = new T[1];
 
-    void resizeArray(int newCapacity);
+    void resize(int newCapacity);
 
   public:
     ~ResizingArrayStack();
 
-    void push(T data);
+    void push(const T&& data);
     T pop();
     bool isEmpty() const;
     int size() const;     // Current number of elements in the array
@@ -40,12 +40,12 @@ class ResizingArrayQueue {
     int capacity = 1;
     T* array = new T[1];
 
-    void resizeArray(int newCapacity);
+    void resize(int newCapacity);
 
   public:
     ~ResizingArrayQueue();
 
-    void enqueue(T data);
+    void enqueue(const T&& data);
     T dequeue();
     bool isEmpty() const;
     int size() const;     // Current number of elements in the array

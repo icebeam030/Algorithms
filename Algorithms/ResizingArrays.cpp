@@ -4,14 +4,14 @@
 #include <stdexcept>
 #include "ResizingArrays.h"
 
-// Resizing array stack
+// Resizing array stack implementation
 template <class T>
 ResizingArrayStack<T>::~ResizingArrayStack() {
   delete[] array;
 }
 
 template <class T>
-void ResizingArrayStack<T>::resizeArray(int newCapacity) {
+void ResizingArrayStack<T>::resize(int newCapacity) {
   T* newArray = new T[newCapacity];
   for (int i = 0; i < numberOfItems; ++i) {
     newArray[i] = array[i];
@@ -25,9 +25,9 @@ void ResizingArrayStack<T>::resizeArray(int newCapacity) {
 }
 
 template <class T>
-void ResizingArrayStack<T>::push(T data) {
+void ResizingArrayStack<T>::push(const T&& data) {
   if (numberOfItems == capacity) {
-    resizeArray(2 * capacity);
+    resize(2 * capacity);
   }
 
   array[numberOfItems++] = data;
@@ -40,7 +40,7 @@ T ResizingArrayStack<T>::pop() {
   }
 
   if (numberOfItems == capacity / 4) {
-    resizeArray(capacity / 2);
+    resize(capacity / 2);
   }
 
   return array[--numberOfItems];
@@ -62,14 +62,14 @@ int ResizingArrayStack<T>::maxSize() const {
 }
 
 
-// Resizing array queue
+// Resizing array queue implementation
 template <class T>
 ResizingArrayQueue<T>::~ResizingArrayQueue() {
   delete[] array;
 }
 
 template <class T>
-void ResizingArrayQueue<T>::resizeArray(int newCapacity) {
+void ResizingArrayQueue<T>::resize(int newCapacity) {
   T* newArray = new T[newCapacity];
   for (int i = 0; i < numberOfItems; ++i) {
     newArray[i] = array[(head + i) % capacity];
@@ -85,9 +85,9 @@ void ResizingArrayQueue<T>::resizeArray(int newCapacity) {
 }
 
 template <class T>
-void ResizingArrayQueue<T>::enqueue(T data) {
+void ResizingArrayQueue<T>::enqueue(const T&& data) {
   if (numberOfItems == capacity) {
-    resizeArray(2 * capacity);
+    resize(2 * capacity);
   }
 
   array[tail] = data;
@@ -102,7 +102,7 @@ T ResizingArrayQueue<T>::dequeue() {
   }
 
   if (numberOfItems == capacity / 4) {
-    resizeArray(capacity / 2);
+    resize(capacity / 2);
   }
 
   T data = array[head];

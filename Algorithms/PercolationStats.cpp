@@ -87,7 +87,8 @@ double PercolationStats::stdDev() const {
   for (double threshold : thresholds) {
     s_squared += (threshold - m) * (threshold - m);
   }
-  return sqrt(s_squared / (T - 1));
+  s_squared /= static_cast<double>(T) - 1;
+  return sqrt(s_squared);
 }
 
 double PercolationStats::confidenceLo() const {

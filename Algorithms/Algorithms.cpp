@@ -4,8 +4,11 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <memory>
 
 #include "PercolationStats.h"
+#include "LinkedLists.h"
+#include "LinkedLists.cpp"
 #include "ResizingArrays.h"
 #include "ResizingArrays.cpp"
 
@@ -25,17 +28,22 @@ int main() {
   //   return EXIT_FAILURE;
   // }
 
-  ResizingArrayQueue<string> queue;
-  for (int i = 0; i < 4; ++i) {
-    queue.enqueue(to_string(i));
-  }
-  for (int i = 0; i < 3; ++i) {
-    cout << queue.dequeue() << '\n';
+  ResizingArrayQueue<string> stack;
+  for (int i = 0; i < 5; ++i) {
+    stack.enqueue(to_string(i));
   }
   for (int i = 0; i < 2; ++i) {
-    queue.enqueue("2nd " + to_string(i));
+    stack.dequeue();
   }
-  while (!queue.isEmpty()) {
-    cout << queue.dequeue() << '\n';
+  for (int i = 0; i < 3; ++i) {
+    stack.enqueue("2nd " + to_string(i));
+  }
+  // cout << "Testing iterator...\n";
+  // for (string s : stack) {
+  //   cout << s << '\n';
+  // }
+  cout << "dequeueing all elements...\n";
+  while (!stack.isEmpty()) {
+    cout << stack.dequeue() << '\n';
   }
 }
