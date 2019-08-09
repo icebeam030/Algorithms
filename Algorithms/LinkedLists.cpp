@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include "LinkedLists.h"
 
+using namespace std;
+
 // Linked list stack implementation
 template <class T>
 LinkedListStack<T>::~LinkedListStack() {
@@ -27,7 +29,7 @@ void LinkedListStack<T>::push(const T&& data) {
 template <class T>
 T LinkedListStack<T>::pop() {
   if (isEmpty()) {
-    throw logic_error("Error: Poping from empty stack");
+    throw logic_error("Error: Poping from empty stack!");
   }
 
   T data = head->data;
@@ -94,7 +96,7 @@ void LinkedListQueue<T>::enqueue(const T&& data) {
 template <class T>
 T LinkedListQueue<T>::dequeue() {
   if (isEmpty()) {
-    throw logic_error("Error: Poping from empty queue");
+    throw logic_error("Error: Poping from empty queue!");
   }
 
   T data = head->data;

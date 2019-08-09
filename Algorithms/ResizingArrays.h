@@ -5,8 +5,6 @@
 
 #pragma once
 
-using namespace std;
-
 // Resizing array stack
 template <class T>
 class ResizingArrayStack {

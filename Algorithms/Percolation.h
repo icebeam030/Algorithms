@@ -2,8 +2,6 @@
 
 #include "UnionFind.h"
 
-using namespace std;
-
 // Define a UnionFind grid to model a percolation system,
 // which can be the foundation of Monte-Carlo simulations.
 // Key function is open(row, col)

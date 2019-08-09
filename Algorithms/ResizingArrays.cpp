@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include "ResizingArrays.h"
 
+using namespace std;
+
 // Resizing array stack implementation
 template <class T>
 ResizingArrayStack<T>::~ResizingArrayStack() {
@@ -36,7 +38,7 @@ void ResizingArrayStack<T>::push(const T&& data) {
 template <class T>
 T ResizingArrayStack<T>::pop() {
   if (isEmpty()) {
-    throw logic_error("Error: Poping from empty stack");
+    throw logic_error("Error: Poping from empty stack!");
   }
 
   if (numberOfItems == capacity / 4) {
@@ -98,7 +100,7 @@ void ResizingArrayQueue<T>::enqueue(const T&& data) {
 template <class T>
 T ResizingArrayQueue<T>::dequeue() {
   if (isEmpty()) {
-    throw logic_error("Error: Poping from empty stack");
+    throw logic_error("Error: Poping from empty stack!");
   }
 
   if (numberOfItems == capacity / 4) {

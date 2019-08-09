@@ -5,10 +5,6 @@
 
 #pragma once
 
-#include <memory>
-
-using namespace std;
-
 // Linked list stack
 template <class T>
 class LinkedListStack {

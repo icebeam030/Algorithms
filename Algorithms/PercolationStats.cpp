@@ -7,8 +7,6 @@
 #include "PercolationStats.h"
 #include "Percolation.h"
 
-using namespace std;
-
 PercolationStats::PercolationStats(int n, int t)
     : N(n), T(t) {
   if (n <= 0 || t <= 0) {

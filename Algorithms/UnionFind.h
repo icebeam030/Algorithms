@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace std;
-
 // Implements the Weighted Quick Union algorithm with path compression
 // for union-find problems.
 // Useful for dynamic connectivity, or percolation problems.
