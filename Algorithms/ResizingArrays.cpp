@@ -53,8 +53,7 @@ T ResizingArrayStack<T>::pop()
 }
 
 template <class T>
-bool ResizingArrayStack<T>::is_empty() const
-{
+bool ResizingArrayStack<T>::is_empty() const {
   return number_of_items == 0;
 }
 
@@ -68,6 +67,18 @@ template <class T>
 int ResizingArrayStack<T>::max_size() const
 {
   return capacity;
+}
+
+template <class T>
+typename ResizingArrayStack<T>::Iterator ResizingArrayStack<T>::begin() const
+{
+  return Iterator(array, number_of_items - 1);
+}
+
+template <class T>
+typename ResizingArrayStack<T>::Iterator ResizingArrayStack<T>::end() const
+{
+  return Iterator(array, -1);
 }
 
 
@@ -140,4 +151,16 @@ template <class T>
 int ResizingArrayQueue<T>::max_size() const
 {
   return capacity;
+}
+
+template <class T>
+typename ResizingArrayQueue<T>::Iterator ResizingArrayQueue<T>::begin() const
+{
+  return Iterator(array, head, capacity);
+}
+
+template <class T>
+typename ResizingArrayQueue<T>::Iterator ResizingArrayQueue<T>::end() const
+{
+  return Iterator(array, tail, capacity);
 }

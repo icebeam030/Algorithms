@@ -18,6 +18,8 @@ private:
   int number_of_items = 0;
 
   class Iterator {
+  private:
+    Node* node;
   public:
     Iterator(Node* node) : node(node) {}
     Iterator& operator++() {
@@ -26,8 +28,6 @@ private:
     }
     bool operator!=(const Iterator& other) const { return node != other.node; }
     const T& operator*() const { return node->data; }
-  private:
-    Node* node;
   };
 
 public:

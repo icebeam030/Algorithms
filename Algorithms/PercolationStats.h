@@ -16,7 +16,7 @@ public:
   PercolationStats(int n, int t);
 
   // Some stats of simulated percolation thresholds
-  double mean() const;          // Sample mean
+  double mean() const;           // Sample mean
   double std_dev() const;        // Sample standard deviation
   double confidence_lo() const;  // Low endpoint of 95% confidence interval
   double confidence_hi() const;  // High endpoint of 95% confidence interval

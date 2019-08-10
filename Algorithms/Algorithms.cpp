@@ -26,22 +26,22 @@ int main() {
   //   return EXIT_FAILURE;
   // }
 
-  LinkedListQueue<string> stack;
+  ResizingArrayStack<string> stack;
   for (int i = 0; i < 5; ++i) {
-    stack.enqueue(to_string(i));
+    stack.push(to_string(i));
   }
   for (int i = 0; i < 2; ++i) {
-    stack.dequeue();
+    stack.pop();
   }
   for (int i = 0; i < 3; ++i) {
-    stack.enqueue("2nd " + to_string(i));
+    stack.push("2nd " + to_string(i));
   }
   cout << "Testing iterator...\n";
   for (string s : stack) {
     cout << s << '\n';
   }
-  cout << "dequeueing all elements...\n";
+  cout << "poping all elements...\n";
   while (!stack.is_empty()) {
-    cout << stack.dequeue() << '\n';
+    cout << stack.pop() << '\n';
   }
 }
