@@ -2,15 +2,13 @@
 
 #include <vector>
 
-using namespace std;
-
 // Monte-Carlo simulation implementation based on Percolation model.
 // Construct different objects to see the resulting stats.
 class PercolationStats {
   private:
     const int N;
     const int T;
-    vector<double> thresholds;  // Store simulated percolation thresholds
+    std::vector<double> thresholds;  // Store simulated percolation thresholds
     void run();
 
   public:

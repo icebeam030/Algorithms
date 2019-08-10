@@ -58,11 +58,7 @@ typename LinkedListStack<T>::Iterator LinkedListStack<T>::begin() const {
 
 template <class T>
 typename LinkedListStack<T>::Iterator LinkedListStack<T>::end() const {
-  Node* tail = head;
-  while (tail != nullptr) {
-    tail = tail->next;
-  }
-  return Iterator(tail);
+  return Iterator(nullptr);
 }
 
 
@@ -129,5 +125,5 @@ typename LinkedListQueue<T>::Iterator LinkedListQueue<T>::begin() const {
 
 template <class T>
 typename LinkedListQueue<T>::Iterator LinkedListQueue<T>::end() const {
-  return Iterator(tail->next);
+  return Iterator(nullptr);
 }

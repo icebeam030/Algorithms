@@ -23,13 +23,12 @@ class LinkedListStack {
         Node* node;
       public:
         Iterator(Node* node) : node(node) {}
-        Iterator operator++() {
+        Iterator& operator++() {
           node = node->next;
           return *this;
         }
-        bool operator==(const Iterator& other) const { return node == other.node; }
         bool operator!=(const Iterator& other) const { return node != other.node; }
-        T operator*() const { return node->data; }
+        const T& operator*() const { return node->data; }
     };
 
   public:
@@ -65,13 +64,12 @@ class LinkedListQueue {
         Node* node;
       public:
         Iterator(Node* node) : node(node) {}
-        Iterator operator++() {
+        Iterator& operator++() {
           node = node->next;
           return *this;
         }
-        bool operator==(const Iterator& other) const { return node == other.node; }
         bool operator!=(const Iterator& other) const { return node != other.node; }
-        T operator*() const { return node->data; }
+        const T& operator*() const { return node->data; }
     };
 
   public:
