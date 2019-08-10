@@ -1,20 +1,33 @@
 // This file includes resizing array stack, queue and randomised queue.
-// This file is declaration only. Include BOTH this file and
-// ResizingArrays.cpp which includes the implementation, in the file
-// where you want to instantiate a template class instance.
 
 #pragma once
 
+#include <stdexcept>
+
+namespace ResizingArrays
+{
 // Resizing array stack
 template <class T>
-class ResizingArrayStack {
+class Stack {
 private:
   int number_of_items = 0;
-  // Capacity of array initialised to 1
+  // Array capacity initialised to 1
   int capacity = 1;
   T* array = new T[1];
 
-  void resize(int new_capacity);
+  // Resize array capacity to new_capacity
+  void resize(int new_capacity) {
+    T* new_array = new T[new_capacity];
+    for (int i = 0; i < number_of_items; ++i) {
+      new_array[i] = array[i];
+    }
+
+    T* old_array = array;
+    array = new_array;
+    delete[] old_array;
+
+    capacity = new_capacity;
+  }
 
   class Iterator {
   private:
@@ -31,31 +44,84 @@ private:
   };
 
 public:
-  ~ResizingArrayStack();
+  // Destructor
+  ~Stack() {
+    delete[] array;
+  }
 
-  void push(const T& data);
-  T pop();
-  bool is_empty() const;
-  int size() const;      // Current number of elements in the array
-  int max_size() const;  // Maximum number of elements the array can contain
+  // Push data to the top of the stack
+  void push(const T& data) {
+    if (number_of_items == capacity) {
+      resize(2 * capacity);
+    }
+    array[number_of_items++] = data;
+  }
 
-  Iterator begin() const;
-  Iterator end() const;
+  // Pop data from the top of the stack
+  T pop() {
+    if (is_empty()) {
+      throw std::logic_error("Error: Poping from empty stack!");
+    }
+
+    if (number_of_items == capacity / 4) {
+      resize(capacity / 2);
+    }
+    return array[--number_of_items];
+  }
+
+  // Is the stack empty?
+  bool is_empty() const {
+    return number_of_items == 0;
+  }
+
+  // Current number of items on the stack
+  int size() const {
+    return number_of_items;
+  }
+
+  // Maximum number of items the stack can hold
+  int max_size() const {
+    return capacity;
+  }
+
+  // Beginning iterator
+  Iterator begin() const {
+    return Iterator(array, number_of_items - 1);
+  }
+
+  // Ending iterator
+  Iterator end() const {
+    return Iterator(array, -1);
+  }
 };
 
 
 // Resizing array queue
 template <class T>
-class ResizingArrayQueue {
+class Queue {
 private:
   int head = 0;
   int tail = 0;
   int number_of_items = 0;
-  // Capacity of array initialised to 1
+  // Array capacity initialised to 1
   int capacity = 1;
   T* array = new T[1];
 
-  void resize(int new_capacity);
+  // Resize array capacity to new_capacity
+  void resize(int new_capacity) {
+    T* new_array = new T[new_capacity];
+    for (int i = 0; i < number_of_items; ++i) {
+      new_array[i] = array[(head + i) % capacity];
+    }
+
+    T* old_array = array;
+    array = new_array;
+    delete[] old_array;
+
+    capacity = new_capacity;
+    head = 0;
+    tail = number_of_items;
+  }
 
   class Iterator {
   private:
@@ -74,14 +140,60 @@ private:
   };
 
 public:
-  ~ResizingArrayQueue();
+  // Destructor
+  ~Queue() {
+    delete[] array;
+  }
 
-  void enqueue(const T& data);
-  T dequeue();
-  bool is_empty() const;
-  int size() const;      // Current number of elements in the array
-  int max_size() const;  // Maximum number of elements the array can contain
+  // Enqueue data to the back of the queue
+  void enqueue(const T& data) {
+    if (number_of_items == capacity) {
+      resize(2 * capacity);
+    }
+    array[tail] = data;
+    tail = (tail + 1) % capacity;
+    ++number_of_items;
+  }
 
-  Iterator begin() const;
-  Iterator end() const;
+  // Dequeue data from the front of the queue
+  T dequeue() {
+    if (is_empty()) {
+      throw std::logic_error("Error: Poping from empty stack!");
+    }
+
+    if (number_of_items == capacity / 4) {
+      resize(capacity / 2);
+    }
+    T data = array[head];
+    head = (head + 1) % capacity;
+    --number_of_items;
+    return data;
+  }
+
+  // Is the queue empty?
+  bool is_empty() const {
+    return number_of_items == 0;
+  }
+
+  // Current number of items on the queue
+  int size() const {
+    return number_of_items;
+  }
+
+  // Maximum number of items the queue can hold
+  int max_size() const {
+    return capacity;
+  }
+
+  // Beginning iterator
+  Iterator begin() const {
+    return Iterator(array, head, capacity);
+  }
+
+  // Ending iterator
+  Iterator end() const {
+    return Iterator(array, tail, capacity);
+  }
 };
+
+}

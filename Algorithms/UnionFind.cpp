@@ -3,8 +3,7 @@
 
 using namespace std;
 
-UnionFind::UnionFind(int n) : N(n)
-{
+UnionFind::UnionFind(int n) : N(n) {
   if (n <= 0) {
     throw invalid_argument("UnionFind: n should be positive!");
   }
@@ -18,14 +17,12 @@ UnionFind::UnionFind(int n) : N(n)
   }
 }
 
-UnionFind::~UnionFind()
-{
+UnionFind::~UnionFind() {
   delete[] root;
   delete[] size;
 }
 
-int UnionFind::get_root(int i)
-{
+int UnionFind::get_root(int i) {
   if (i < 0 || i > N - 1) {
     throw invalid_argument("UnionFind: argument should be within [0, N - 1]!");
   }
@@ -38,8 +35,7 @@ int UnionFind::get_root(int i)
   return i;
 }
 
-bool UnionFind::is_connected(int a, int b)
-{
+bool UnionFind::is_connected(int a, int b) {
   if (a < 0 || a > N - 1 || b < 0 || b > N - 1) {
     throw invalid_argument("UnionFind: argument should be within [0, N - 1]!");
   }
@@ -47,8 +43,7 @@ bool UnionFind::is_connected(int a, int b)
   return get_root(a) == get_root(b);
 }
 
-void UnionFind::connect(int a, int b)
-{
+void UnionFind::connect(int a, int b) {
   if (a < 0 || a > N - 1 || b < 0 || b > N - 1) {
     throw invalid_argument("UnionFind: argument should be within [0, N - 1]!");
   }

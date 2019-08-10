@@ -10,8 +10,7 @@
 using namespace std;
 
 PercolationStats::PercolationStats(int n, int t)
-  : N(n), T(t)
-{
+    : N(n), T(t) {
   if (n <= 0 || t <= 0) {
     throw invalid_argument("PercolationStats: n and t should be positive!");
   }
@@ -19,8 +18,7 @@ PercolationStats::PercolationStats(int n, int t)
   run();
 }
 
-void PercolationStats::run()
-{
+void PercolationStats::run() {
   cout << "Performing " << T << " trials on a " << N << "x" << N << " grid\n";
   cout << "This may take some time...\n\n";
 
@@ -75,8 +73,7 @@ void PercolationStats::run()
   cout << "High end of 95% confidence interval: " << confidence_hi() << '\n';
 }
 
-double PercolationStats::mean() const
-{
+double PercolationStats::mean() const {
   double sum = 0.0;
   for (double threshold : thresholds) {
     sum += threshold;
@@ -84,8 +81,7 @@ double PercolationStats::mean() const
   return sum / T;
 }
 
-double PercolationStats::std_dev() const
-{
+double PercolationStats::std_dev() const {
   double s_squared = 0.0;
   double m = mean();
   for (double threshold : thresholds) {
@@ -95,15 +91,13 @@ double PercolationStats::std_dev() const
   return sqrt(s_squared);
 }
 
-double PercolationStats::confidence_lo() const
-{
+double PercolationStats::confidence_lo() const {
   double m = mean();
   double s = std_dev();
   return m - (1.96 * s) / sqrt(T);
 }
 
-double PercolationStats::confidence_hi() const
-{
+double PercolationStats::confidence_hi() const {
   double m = mean();
   double s = std_dev();
   return m + (1.96 * s) / sqrt(T);

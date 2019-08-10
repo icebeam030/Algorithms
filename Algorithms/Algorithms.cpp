@@ -6,11 +6,10 @@
 
 #include "PercolationStats.h"
 #include "LinkedLists.h"
-#include "LinkedLists.cpp"
 #include "ResizingArrays.h"
-#include "ResizingArrays.cpp"
 
 using namespace std;
+using namespace LinkedLists;
 
 int main() {
   // try {
@@ -26,7 +25,7 @@ int main() {
   //   return EXIT_FAILURE;
   // }
 
-  ResizingArrayStack<string> stack;
+  Stack<string> stack;
   for (int i = 0; i < 5; ++i) {
     stack.push(to_string(i));
   }

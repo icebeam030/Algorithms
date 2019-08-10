@@ -7,8 +7,7 @@ using namespace std;
 Percolation::Percolation(int n)
   : N(n),
     grid(UnionFind(n * n + 2)),
-    open_status(new bool[n * n + 2])
-{
+    open_status(new bool[n * n + 2]) {
   if (n <= 0) {
     throw invalid_argument("Percolation: n should be positive!");
   }
@@ -29,13 +28,11 @@ Percolation::Percolation(int n)
   }
 }
 
-Percolation::~Percolation()
-{
+Percolation::~Percolation() {
   delete[] open_status;
 }
 
-void Percolation::open(int row, int col)
-{
+void Percolation::open(int row, int col) {
   if (row < 1 || row > N || col < 1 || col > N) {
     throw invalid_argument("Percolation: row and col should be within [1, N]!");
   }
@@ -66,8 +63,7 @@ void Percolation::open(int row, int col)
   }
 }
 
-bool Percolation::is_open(int row, int col) const
-{
+bool Percolation::is_open(int row, int col) const {
   if (row < 1 || row > N || col < 1 || col > N) {
     throw invalid_argument("Percolation: row and col should be within [1, N]!");
   }
@@ -76,8 +72,7 @@ bool Percolation::is_open(int row, int col) const
   return open_status[i];
 }
 
-bool Percolation::is_full(int row, int col)
-{
+bool Percolation::is_full(int row, int col) {
   if (row < 1 || row > N || col < 1 || col > N) {
     throw invalid_argument("Percolation: row and col should be within [1, N]!");
   }
@@ -86,12 +81,10 @@ bool Percolation::is_full(int row, int col)
   return grid.is_connected(i, N * N);
 }
 
-int Percolation::number_of_open_sites() const
-{
+int Percolation::number_of_open_sites() const {
   return open_sites_count;
 }
 
-bool Percolation::percolates()
-{
+bool Percolation::percolates() {
   return grid.is_connected(N * N, N * N + 1);
 }
