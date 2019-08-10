@@ -3,7 +3,8 @@
 
 using namespace std;
 
-UnionFind::UnionFind(int n) : N(n) {
+UnionFind::UnionFind(int n) : N(n)
+{
   if (n <= 0) {
     throw invalid_argument("UnionFind: n should be positive!");
   }
@@ -17,12 +18,14 @@ UnionFind::UnionFind(int n) : N(n) {
   }
 }
 
-UnionFind::~UnionFind() {
+UnionFind::~UnionFind()
+{
   delete[] root;
   delete[] size;
 }
 
-int UnionFind::getRoot(int i) {
+int UnionFind::get_root(int i)
+{
   if (i < 0 || i > N - 1) {
     throw invalid_argument("UnionFind: argument should be within [0, N - 1]!");
   }
@@ -35,21 +38,23 @@ int UnionFind::getRoot(int i) {
   return i;
 }
 
-bool UnionFind::isConnected(int a, int b) {
+bool UnionFind::is_connected(int a, int b)
+{
   if (a < 0 || a > N - 1 || b < 0 || b > N - 1) {
     throw invalid_argument("UnionFind: argument should be within [0, N - 1]!");
   }
 
-  return getRoot(a) == getRoot(b);
+  return get_root(a) == get_root(b);
 }
 
-void UnionFind::connect(int a, int b) {
+void UnionFind::connect(int a, int b)
+{
   if (a < 0 || a > N - 1 || b < 0 || b > N - 1) {
     throw invalid_argument("UnionFind: argument should be within [0, N - 1]!");
   }
 
-  int i = getRoot(a);
-  int j = getRoot(b);
+  int i = get_root(a);
+  int j = get_root(b);
   if (i == j) return;
 
   // If the tree containing a is larger

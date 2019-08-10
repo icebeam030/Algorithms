@@ -8,44 +8,44 @@
 // Resizing array stack
 template <class T>
 class ResizingArrayStack {
-  private:
-    int numberOfItems = 0;
-    // Capacity of array initialised to 1
-    int capacity = 1;
-    T* array = new T[1];
+private:
+  int number_of_items = 0;
+  // Capacity of array initialised to 1
+  int capacity = 1;
+  T* array = new T[1];
 
-    void resize(int newCapacity);
+  void resize(int new_capacity);
 
-  public:
-    ~ResizingArrayStack();
+public:
+  ~ResizingArrayStack();
 
-    void push(const T&& data);
-    T pop();
-    bool isEmpty() const;
-    int size() const;     // Current number of elements in the array
-    int maxSize() const;  // Maximum number of elements the array can contain
+  void push(const T& data);
+  T pop();
+  bool is_empty() const;
+  int size() const;     // Current number of elements in the array
+  int max_size() const;  // Maximum number of elements the array can contain
 };
 
 
 // Resizing array queue
 template <class T>
 class ResizingArrayQueue {
-  private:
-    int head = 0;
-    int tail = 0;
-    int numberOfItems = 0;
-    // Capacity of array initialised to 1
-    int capacity = 1;
-    T* array = new T[1];
+private:
+  int head = 0;
+  int tail = 0;
+  int number_of_items = 0;
+  // Capacity of array initialised to 1
+  int capacity = 1;
+  T* array = new T[1];
 
-    void resize(int newCapacity);
+  void resize(int new_capacity);
 
-  public:
-    ~ResizingArrayQueue();
+public:
+  ~ResizingArrayQueue();
 
-    void enqueue(const T&& data);
-    T dequeue();
-    bool isEmpty() const;
-    int size() const;     // Current number of elements in the array
-    int maxSize() const;  // Maximum number of elements the array can contain
+  void enqueue(const T& data);
+  T dequeue();
+  bool is_empty() const;
+  int size() const;     // Current number of elements in the array
+  int max_size() const;  // Maximum number of elements the array can contain
 };

@@ -8,79 +8,75 @@
 // Linked list stack
 template <class T>
 class LinkedListStack {
-  private:
-    struct Node {
-      T data;
-      Node* next;
-    };
+private:
+  struct Node {
+    T data;
+    Node* next;
+  };
 
-    Node* head = nullptr;
-    int numberOfItems = 0;
+  Node* head = nullptr;
+  int number_of_items = 0;
 
-    // Making the stack iterable
-    class Iterator {
-      private:
-        Node* node;
-      public:
-        Iterator(Node* node) : node(node) {}
-        Iterator& operator++() {
-          node = node->next;
-          return *this;
-        }
-        bool operator!=(const Iterator& other) const { return node != other.node; }
-        const T& operator*() const { return node->data; }
-    };
-
+  class Iterator {
   public:
-    ~LinkedListStack();
+    Iterator(Node* node) : node(node) {}
+    Iterator& operator++() {
+      node = node->next;
+      return *this;
+    }
+    bool operator!=(const Iterator& other) const { return node != other.node; }
+    const T& operator*() const { return node->data; }
+  private:
+    Node* node;
+  };
 
-    void push(const T&& data);
-    T pop();
-    bool isEmpty() const;
-    int size() const;
+public:
+  ~LinkedListStack();
 
-    // For iterating over the stack
-    Iterator begin() const;
-    Iterator end() const;
+  void push(const T& data);
+  T pop();
+  bool is_empty() const;
+  int size() const;
+
+  Iterator begin() const;
+  Iterator end() const;
 };
 
 
 // Linked list queue
 template <class T>
 class LinkedListQueue {
+private:
+  struct Node {
+    T data;
+    Node* next;
+  };
+
+  Node* head = nullptr;
+  Node* tail = head;
+  int number_of_items = 0;
+
+  class Iterator {
   private:
-    struct Node {
-      T data;
-      Node* next;
-    };
-
-    Node* head = nullptr;
-    Node* tail = head;
-    int numberOfItems = 0;
-
-    // Making the queue iterable
-    class Iterator {
-      private:
-        Node* node;
-      public:
-        Iterator(Node* node) : node(node) {}
-        Iterator& operator++() {
-          node = node->next;
-          return *this;
-        }
-        bool operator!=(const Iterator& other) const { return node != other.node; }
-        const T& operator*() const { return node->data; }
-    };
-
+    Node* node;
   public:
-    ~LinkedListQueue();
+    Iterator(Node* node) : node(node) {}
+    Iterator& operator++() {
+      node = node->next;
+      return *this;
+    }
+    bool operator!=(const Iterator& other) const { return node != other.node; }
+    const T& operator*() const { return node->data; }
+  };
 
-    void enqueue(const T&& data);
-    T dequeue();
-    bool isEmpty() const;
-    int size() const;
+public:
+  ~LinkedListQueue();
 
-    // For iterating over the queue
-    Iterator begin() const;
-    Iterator end() const;
+  void enqueue(const T& data);
+  T dequeue();
+  bool is_empty() const;
+  int size() const;
+
+  Iterator begin() const;
+  Iterator end() const;
 };

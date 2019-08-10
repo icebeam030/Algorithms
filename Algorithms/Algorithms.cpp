@@ -41,7 +41,7 @@ int main() {
     cout << s << '\n';
   }
   cout << "dequeueing all elements...\n";
-  while (!stack.isEmpty()) {
+  while (!stack.is_empty()) {
     cout << stack.dequeue() << '\n';
   }
 }

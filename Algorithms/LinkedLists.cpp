@@ -8,7 +8,8 @@ using namespace std;
 
 // Linked list stack implementation
 template <class T>
-LinkedListStack<T>::~LinkedListStack() {
+LinkedListStack<T>::~LinkedListStack()
+{
   while (head != nullptr) {
     Node* current = head;
     head = head->next;
@@ -17,54 +18,61 @@ LinkedListStack<T>::~LinkedListStack() {
 }
 
 template <class T>
-void LinkedListStack<T>::push(const T&& data) {
-  Node* newNode = new Node;
-  newNode->data = data;
-  newNode->next = head;
-  head = newNode;
+void LinkedListStack<T>::push(const T& data)
+{
+  Node* new_node = new Node;
+  new_node->data = data;
+  new_node->next = head;
+  head = new_node;
 
-  ++numberOfItems;
+  ++number_of_items;
 }
 
 template <class T>
-T LinkedListStack<T>::pop() {
-  if (isEmpty()) {
+T LinkedListStack<T>::pop()
+{
+  if (is_empty()) {
     throw logic_error("Error: Poping from empty stack!");
   }
 
   T data = head->data;
-  Node* oldHead = head;
+  Node* old_head = head;
   head = head->next;
-  delete oldHead;
+  delete old_head;
 
-  --numberOfItems;
+  --number_of_items;
   return data;
 }
 
 template <class T>
-bool LinkedListStack<T>::isEmpty() const {
+bool LinkedListStack<T>::is_empty() const
+{
   return head == nullptr;
 }
 
 template <class T>
-int LinkedListStack<T>::size() const {
-  return numberOfItems;
+int LinkedListStack<T>::size() const
+{
+  return number_of_items;
 }
 
 template <class T>
-typename LinkedListStack<T>::Iterator LinkedListStack<T>::begin() const {
+typename LinkedListStack<T>::Iterator LinkedListStack<T>::begin() const
+{
   return Iterator(head);
 }
 
 template <class T>
-typename LinkedListStack<T>::Iterator LinkedListStack<T>::end() const {
+typename LinkedListStack<T>::Iterator LinkedListStack<T>::end() const
+{
   return Iterator(nullptr);
 }
 
 
 // Linked list queue implementation
 template <class T>
-LinkedListQueue<T>::~LinkedListQueue() {
+LinkedListQueue<T>::~LinkedListQueue()
+{
   while (head != nullptr) {
     Node* current = head;
     head = head->next;
@@ -73,57 +81,63 @@ LinkedListQueue<T>::~LinkedListQueue() {
 }
 
 template <class T>
-void LinkedListQueue<T>::enqueue(const T&& data) {
-  Node* oldTail = tail;
+void LinkedListQueue<T>::enqueue(const T& data)
+{
+  Node* old_tail = tail;
 
   tail = new Node;
   tail->data = data;
   tail->next = nullptr;
 
-  if (isEmpty()) {
+  if (is_empty()) {
     head = tail;
   } else {
-    oldTail->next = tail;
+    old_tail->next = tail;
   }
 
-  ++numberOfItems;
+  ++number_of_items;
 }
 
 template <class T>
-T LinkedListQueue<T>::dequeue() {
-  if (isEmpty()) {
+T LinkedListQueue<T>::dequeue()
+{
+  if (is_empty()) {
     throw logic_error("Error: Poping from empty queue!");
   }
 
   T data = head->data;
-  Node* oldHead = head;
+  Node* old_head = head;
   head = head->next;
-  delete oldHead;
+  delete old_head;
 
-  if (isEmpty()) {
+  if (is_empty()) {
     tail = nullptr;
   }
 
-  --numberOfItems;
+  --number_of_items;
   return data;
 }
 
 template <class T>
-bool LinkedListQueue<T>::isEmpty() const {
+bool LinkedListQueue<T>::is_empty() const
+{
   return head == nullptr;
 }
 
 template <class T>
-int LinkedListQueue<T>::size() const {
-  return numberOfItems;
+int LinkedListQueue<T>::size() const
+{
+  return number_of_items;
 }
 
 template <class T>
-typename LinkedListQueue<T>::Iterator LinkedListQueue<T>::begin() const {
+typename LinkedListQueue<T>::Iterator LinkedListQueue<T>::begin() const
+{
   return Iterator(head);
 }
 
 template <class T>
-typename LinkedListQueue<T>::Iterator LinkedListQueue<T>::end() const {
+typename LinkedListQueue<T>::Iterator LinkedListQueue<T>::end() const
+{
   return Iterator(nullptr);
 }

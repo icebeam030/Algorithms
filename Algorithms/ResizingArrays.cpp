@@ -8,122 +8,136 @@ using namespace std;
 
 // Resizing array stack implementation
 template <class T>
-ResizingArrayStack<T>::~ResizingArrayStack() {
+ResizingArrayStack<T>::~ResizingArrayStack()
+{
   delete[] array;
 }
 
 template <class T>
-void ResizingArrayStack<T>::resize(int newCapacity) {
-  T* newArray = new T[newCapacity];
-  for (int i = 0; i < numberOfItems; ++i) {
-    newArray[i] = array[i];
+void ResizingArrayStack<T>::resize(int new_capacity)
+{
+  T* new_array = new T[new_capacity];
+  for (int i = 0; i < number_of_items; ++i) {
+    new_array[i] = array[i];
   }
 
-  T* oldArray = array;
-  array = newArray;
-  delete[] oldArray;
+  T* old_array = array;
+  array = new_array;
+  delete[] old_array;
 
-  capacity = newCapacity;
+  capacity = new_capacity;
 }
 
 template <class T>
-void ResizingArrayStack<T>::push(const T&& data) {
-  if (numberOfItems == capacity) {
+void ResizingArrayStack<T>::push(const T& data)
+{
+  if (number_of_items == capacity) {
     resize(2 * capacity);
   }
 
-  array[numberOfItems++] = data;
+  array[number_of_items++] = data;
 }
 
 template <class T>
-T ResizingArrayStack<T>::pop() {
-  if (isEmpty()) {
+T ResizingArrayStack<T>::pop()
+{
+  if (is_empty()) {
     throw logic_error("Error: Poping from empty stack!");
   }
 
-  if (numberOfItems == capacity / 4) {
+  if (number_of_items == capacity / 4) {
     resize(capacity / 2);
   }
 
-  return array[--numberOfItems];
+  return array[--number_of_items];
 }
 
 template <class T>
-bool ResizingArrayStack<T>::isEmpty() const {
-  return numberOfItems == 0;
+bool ResizingArrayStack<T>::is_empty() const
+{
+  return number_of_items == 0;
 }
 
 template <class T>
-int ResizingArrayStack<T>::size() const {
-  return numberOfItems;
+int ResizingArrayStack<T>::size() const
+{
+  return number_of_items;
 }
 
 template <class T>
-int ResizingArrayStack<T>::maxSize() const {
+int ResizingArrayStack<T>::max_size() const
+{
   return capacity;
 }
 
 
 // Resizing array queue implementation
 template <class T>
-ResizingArrayQueue<T>::~ResizingArrayQueue() {
+ResizingArrayQueue<T>::~ResizingArrayQueue()
+{
   delete[] array;
 }
 
 template <class T>
-void ResizingArrayQueue<T>::resize(int newCapacity) {
-  T* newArray = new T[newCapacity];
-  for (int i = 0; i < numberOfItems; ++i) {
-    newArray[i] = array[(head + i) % capacity];
+void ResizingArrayQueue<T>::resize(int new_capacity)
+{
+  T* new_array = new T[new_capacity];
+  for (int i = 0; i < number_of_items; ++i) {
+    new_array[i] = array[(head + i) % capacity];
   }
 
-  T* oldArray = array;
-  array = newArray;
-  delete[] oldArray;
+  T* old_array = array;
+  array = new_array;
+  delete[] old_array;
 
-  capacity = newCapacity;
+  capacity = new_capacity;
   head = 0;
-  tail = numberOfItems;
+  tail = number_of_items;
 }
 
 template <class T>
-void ResizingArrayQueue<T>::enqueue(const T&& data) {
-  if (numberOfItems == capacity) {
+void ResizingArrayQueue<T>::enqueue(const T& data)
+{
+  if (number_of_items == capacity) {
     resize(2 * capacity);
   }
 
   array[tail] = data;
   tail = (tail + 1) % capacity;
-  ++numberOfItems;
+  ++number_of_items;
 }
 
 template <class T>
-T ResizingArrayQueue<T>::dequeue() {
-  if (isEmpty()) {
+T ResizingArrayQueue<T>::dequeue()
+{
+  if (is_empty()) {
     throw logic_error("Error: Poping from empty stack!");
   }
 
-  if (numberOfItems == capacity / 4) {
+  if (number_of_items == capacity / 4) {
     resize(capacity / 2);
   }
 
   T data = array[head];
   head = (head + 1) % capacity;
-  --numberOfItems;
+  --number_of_items;
   return data;
 }
 
 template <class T>
-bool ResizingArrayQueue<T>::isEmpty() const {
-  return numberOfItems == 0;
+bool ResizingArrayQueue<T>::is_empty() const
+{
+  return number_of_items == 0;
 }
 
 template <class T>
-int ResizingArrayQueue<T>::size() const {
-  return numberOfItems;
+int ResizingArrayQueue<T>::size() const
+{
+  return number_of_items;
 }
 
 template <class T>
-int ResizingArrayQueue<T>::maxSize() const {
+int ResizingArrayQueue<T>::max_size() const
+{
   return capacity;
 }
