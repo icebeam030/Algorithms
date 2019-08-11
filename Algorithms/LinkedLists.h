@@ -42,34 +42,35 @@ public:
     }
   }
 
-  // Push data to the top of the stack
+  // Push an item to the top of the stack
   void push(const T& data) {
-    Node* new_node = new Node;
-    new_node->data = data;
-    new_node->next = head;
-    head = new_node;
+    Node* new_head = new Node;
+    new_head->data = data;
+    new_head->next = head;
+    head = new_head;
 
     ++number_of_items;
   }
 
-  // Pop data from the top of the stack
+  // Pop an item from the top of the stack
   T pop() {
     if (is_empty()) {
       throw std::logic_error("Error: Poping from empty stack!");
     }
 
     T data = head->data;
+
     Node* old_head = head;
     head = head->next;
     delete old_head;
-
     --number_of_items;
+
     return data;
   }
 
   // Is the stack empty?
   bool is_empty() const {
-    return head == nullptr;
+    return number_of_items == 0;
   }
 
   // Current number of items on the stack
@@ -126,34 +127,35 @@ public:
     }
   }
 
-  // Enqueue data to the back of the queue
-  void enqueue(const T& data) {
-    Node* old_tail = tail;
-
-    tail = new Node;
-    tail->data = data;
-    tail->next = nullptr;
+  // Push an item to the end of the queue
+  void push(const T& data) {
+    Node* new_tail = new Node;
+    new_tail->data = data;
+    new_tail->next = nullptr;
 
     if (is_empty()) {
-      head = tail;
+      head = new_tail;
     } else {
-      old_tail->next = tail;
+      tail->next = new_tail;
     }
+
     ++number_of_items;
+    tail = new_tail;
   }
 
-  // Dequeue data from the front of the queue
-  T dequeue() {
+  // Pop an item from the start of the queue
+  T pop() {
     if (is_empty()) {
       throw std::logic_error("Error: Poping from empty queue!");
     }
 
     T data = head->data;
+
     Node* old_head = head;
     head = head->next;
     delete old_head;
-
     --number_of_items;
+
     if (is_empty()) {
       tail = nullptr;
     }
@@ -162,7 +164,7 @@ public:
 
   // Is the queue empty?
   bool is_empty() const {
-    return head == nullptr;
+    return number_of_items == 0;
   }
 
   // Current number of items on the queue
@@ -193,7 +195,7 @@ private:
   };
 
   Node* head = nullptr;
-  Node* tail = head;
+  Node* tail = nullptr;
   int number_of_items = 0;
 
   class Iterator {
@@ -220,24 +222,24 @@ public:
     }
   }
 
-  // Push data to the back of the queue
+  // Push an item to the end of the queue
   void push_back(const T& data) {
-    Node* old_tail = tail;
-
-    tail = new Node;
-    tail->data = data;
-    tail->next = nullptr;
-    tail->prev = old_tail;
+    Node* new_tail = new Node;
+    new_tail->data = data;
+    new_tail->next = nullptr;
+    new_tail->prev = tail;
 
     if (is_empty()) {
-      head = tail;
+      head = new_tail;
     } else {
-      old_tail->next = tail;
+      tail->next = new_tail;
     }
+
     ++number_of_items;
+    tail = new_tail;
   }
 
-  // Push data to the front of the queue
+  // Push an item to the start of the queue
   void push_front(const T& data) {
     Node* new_head = new Node;
     new_head->data = data;
@@ -249,47 +251,52 @@ public:
     } else {
       head->prev = new_head;
     }
-    head = new_head;
+
     ++number_of_items;
+    head = new_head;
   }
 
-  // Pop data from the back of the queue
+  // Pop an item from the end of the queue
   T pop_back() {
     if (is_empty()) {
-      throw std::logic_error("Error: Poping from empty queue!");
+      throw std::logic_error("Error: Poping from empty deque!");
     }
 
     T data = tail->data;
+
     Node* old_tail = tail;
     tail = tail->prev;
-    if (tail == nullptr) {
+    delete old_tail;
+    --number_of_items;
+
+    if (is_empty()) {
       head = nullptr;
     } else {
       tail->next = nullptr;
     }
-    delete old_tail;
 
-    --number_of_items;
     return data;
   }
 
-  // Pop data from the front of the queue
+  // Pop an item from the start of the queue
   T pop_front() {
     if (is_empty()) {
-      throw std::logic_error("Error: Poping from empty queue!");
+      throw std::logic_error("Error: Poping from empty deque!");
     }
 
     T data = head->data;
+
     Node* old_head = head;
     head = head->next;
-    if (head == nullptr) {
+    delete old_head;
+    --number_of_items;
+  
+    if (is_empty()) {
       tail = nullptr;
     } else {
       head->prev = nullptr;
     }
-    delete old_head;
 
-    --number_of_items;
     return data;
   }
 
