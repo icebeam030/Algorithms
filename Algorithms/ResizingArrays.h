@@ -219,26 +219,27 @@ private:
   int capacity = 1;
   T* array = new T[1];
 
+  // Generate a random integer between [0, max]
+  static int random_number(int max) {
+    int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
+    std::mt19937 generator(seed);
+    std::uniform_int_distribution<int> distribution(0, max);
+    return distribution(generator);
+  }
+
   class Iterator {
   private:
     T* const array;
     int index;
     std::vector<int> indices;
   public:
-    Iterator(T* array, int n) : array(array) {
-      if (n == -1) {
-        index = -1;
-        return;
-      }
+    Iterator(T* array, int index, int n) : array(array), index(index) {
+      if (this->index == -1) return;
 
-      int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
-      std::mt19937 generator(seed);
-      std::uniform_int_distribution<int> distribution(0, n - 1);
-      index = distribution(generator);
-
+      this->index = random_number(n - 1);
       indices.reserve(n - 1);
       for (int i = 0; i < n; ++i) {
-        if (i != index) {
+        if (i != this->index) {
           indices.push_back(i);
         }
       }
@@ -247,12 +248,8 @@ private:
       if (indices.empty()) {
         index = -1;
       } else {
-        int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
-        std::mt19937 generator(seed);
-        std::uniform_int_distribution<int> distribution(0, indices.size() - 1);
-        int i = distribution(generator);
+        int i = random_number(indices.size() - 1);
         index = indices[i];
-
         std::swap(indices[i], indices.back());
         indices.pop_back();
       }
@@ -300,11 +297,7 @@ public:
       throw std::logic_error("Error: Queue is empty!");
     }
 
-    int seed = static_cast<int>(std::chrono::system_clock::now().time_since_epoch().count());
-    std::mt19937 generator(seed);
-    std::uniform_int_distribution<int> distribution(0, number_of_items - 1);
-    int i = distribution(generator);
-
+    int i = random_number(number_of_items - 1);
     return array[i];
   }
 
@@ -318,11 +311,7 @@ public:
       resize(capacity / 2);
     }
 
-    int seed = static_cast<int>(std::chrono::system_clock::now().time_since_epoch().count());
-    std::mt19937 generator(seed);
-    std::uniform_int_distribution<int> distribution(0, number_of_items - 1);
-    int i = distribution(generator);
-
+    int i = random_number(number_of_items - 1);
     std::swap(array[i], array[number_of_items - 1]);
     return array[--number_of_items];
   }
@@ -344,12 +333,12 @@ public:
 
   // Beginning iterator
   Iterator begin() const {
-    return Iterator(array, number_of_items);
+    return Iterator(array, 0, number_of_items);
   }
 
   // Ending iterator
   Iterator end() const {
-    return Iterator(array, -1);
+    return Iterator(array, -1, number_of_items);
   }
 };
 
