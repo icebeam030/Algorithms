@@ -214,18 +214,20 @@ public:
 template <class T>
 class RandomisedQueue {
 private:
+  // Generate a random integer between [0, max]
+  static int random_number(int max) {
+    using namespace std;
+
+    int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
+    mt19937 generator(seed);
+    uniform_int_distribution<int> distribution(0, max);
+    return distribution(generator);
+  }
+
   int number_of_items = 0;
   // Array capacity initialised to 1
   int capacity = 1;
   T* array = new T[1];
-
-  // Generate a random integer between [0, max]
-  static int random_number(int max) {
-    int seed = static_cast<int>(chrono::system_clock::now().time_since_epoch().count());
-    std::mt19937 generator(seed);
-    std::uniform_int_distribution<int> distribution(0, max);
-    return distribution(generator);
-  }
 
   class Iterator {
   private:

@@ -17,4 +17,3 @@ public:
   bool is_connected(int a, int b);
   void connect(int a, int b);
 };
-
