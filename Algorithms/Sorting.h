@@ -1,9 +1,6 @@
 #pragma once
 
-#define NDEBUG
-
 #include <algorithm>
-#include <assert.h>
 #include <random>
 #include <chrono>
 
@@ -16,19 +13,12 @@ namespace Sorting
 // The range [lo, hi] should be sorted.
 template <class Container, class T>
 int binary_search(const Container& c, int lo, int hi, const T& val) {
-  assert(std::is_sorted(c.begin() + lo, c.begin() + hi + 1));
-
   while (lo <= hi) {
-    int mid = lo + (hi - lo) / 2;
-    if (c[mid] == val) {
-      return mid;
-    } else if (c[mid] > val) {
-      hi = mid - 1;
-    } else {
-      lo = mid + 1;
-    }
+    int mid = (lo + hi) / 2;
+    if (c[mid] == val) { return mid; }
+    else if (c[mid] > val) { hi = mid - 1; }
+    else { lo = mid + 1; }
   }
-
   return -1;
 }
 
@@ -83,12 +73,9 @@ void shuffle(Container& container, int lo, int hi) {
 
 // Merge 2 sorted parts of [lo, mid] and [mid + 1, hi] of the container
 // into sorted range of [lo, hi] in place.
-// aux shall be a copy of c.
+// aux should be a copy of c.
 template <class Container>
 void merge(Container& c, Container& aux, int lo, int mid, int hi) {
-  assert(std::is_sorted(c.begin() + lo, c.begin() + mid + 1));
-  assert(std::is_sorted(c.begin() + mid + 1, c.begin() + hi + 1));
-
   for (int i = lo; i <= hi; ++i) {
     aux[i] = c[i];
   }
@@ -98,32 +85,63 @@ void merge(Container& c, Container& aux, int lo, int mid, int hi) {
   for (int i = lo; i <= hi; ++i) {
     if (left > mid) {
       c[i] = aux[right++];
-    } else if (right > hi) {
+    }
+    else if (right > hi) {
       c[i] = aux[left++];
-    } else if (aux[left] < aux[right]) {
+    }
+    else if (aux[left] < aux[right]) {
       c[i] = aux[left++];
-    } else {
+    }
+    else {
       c[i] = aux[right++];
     }
   }
-
-  assert(std::is_sorted(c.begin() + lo, c.begin() + hi + 1));
 }
 
+// Sort the container within [lo, hi]. aux should be a copy of c.
 template <class Container>
 void merge_sort(Container& c, Container& aux, int lo, int hi) {
-  if (hi <= lo) return;
+  if (hi <= lo) { return; }
   if (hi - lo < 7) {
     insertion_sort(c, lo, hi);
     return;
   }
 
-  int mid = lo + (hi - lo) / 2;
+  int mid = (lo + hi) / 2;
   merge_sort(c, aux, lo, mid);
   merge_sort(c, aux, mid + 1, hi);
 
-  if (c[mid] <= c[mid + 1]) return;
+  if (c[mid] <= c[mid + 1]) { return; }
   merge(c, aux, lo, mid, hi);
+}
+
+// Randomly pick an element x between [lo, hi] of the container, and
+// partition c in place, so that items to the left of x are all smaller
+// than x, and items to the right of x are all greater than or equal to x.
+// Return index of x after partition.
+template <class Container>
+int partition(Container& c, int lo, int hi) {
+  int i = lo + 1;
+  int j = hi;
+
+  while (i <= j) {
+    while (c[i] < c[lo] && i <= hi) { ++i; }
+    while (c[j] > c[lo] && j >= lo) { --j; }
+    if (i < j) { std::swap(c[i], c[j]); }
+  }
+
+  std::swap(c[lo], c[j]);
+  return j;
+}
+
+// Quick sort the container in place within [lo, hi].
+// The container must be shuffled before sorting.
+template <class Container>
+void quick_sort(Container& c, int lo, int hi) {
+  if (hi <= lo) { return; }
+  int x = partition(c, lo, hi);
+  if (x > lo) { quick_sort(c, lo, x - 1); }
+  if (x < hi) { quick_sort(c, x + 1, hi); }
 }
 
 }

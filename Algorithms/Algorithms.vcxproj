@@ -154,7 +154,6 @@
     <ClCompile Include="Algorithms.cpp" />
     <ClCompile Include="Percolation.cpp" />
     <ClCompile Include="PercolationStats.cpp" />
-    <ClCompile Include="Sorting.cpp" />
     <ClCompile Include="UnionFind.cpp" />
   </ItemGroup>
   <ItemGroup>

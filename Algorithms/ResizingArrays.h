@@ -236,7 +236,7 @@ private:
     std::vector<int> indices;
   public:
     Iterator(T* array, int index, int n) : array(array), index(index) {
-      if (this->index == -1) return;
+      if (this->index == -1) { return; }
 
       this->index = random_number(n - 1);
       indices.reserve(n - 1);
