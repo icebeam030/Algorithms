@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
-#include <vector>
 
 namespace Sorting
 {
@@ -16,9 +15,13 @@ template <class Container, class T>
 int binary_search(const Container& c, int lo, int hi, const T& val) {
   while (lo <= hi) {
     int mid = (lo + hi) / 2;
-    if (c[mid] == val) { return mid; }
-    else if (c[mid] > val) { hi = mid - 1; }
-    else { lo = mid + 1; }
+    if (c[mid] == val) {
+      return mid;
+    } else if (c[mid] > val) {
+      hi = mid - 1;
+    } else {
+      lo = mid + 1;
+    }
   }
   return -1;
 }
@@ -28,8 +31,11 @@ template <class Container>
 void insertion_sort(Container& c, int lo, int hi) {
   for (int i = lo + 1; i <= hi; ++i) {
     for (int j = i; j > lo; --j) {
-      if (c[j - 1] > c[j]) { std::swap(c[j], c[j - 1]); }
-      else { break; }
+      if (c[j - 1] > c[j]) {
+        std::swap(c[j], c[j - 1]);
+      } else {
+        break;
+      }
     }
   }
 }
@@ -45,9 +51,12 @@ void shell_sort(Container& c, int lo, int hi) {
   while (h >= 1) {
     for (int i = lo + h; i <= hi; ++i) {
       for (int j = i; j >= lo + h; j -= h) {
-        if (c[j - h] > c[j]) { std::swap(c[j], c[j - h]); }
+        if (c[j - h] > c[j]) {
+          std::swap(c[j], c[j - h]);
+        }
       }
     }
+
     h /= 3;
   }
 }
@@ -72,15 +81,22 @@ void shuffle(Container& container, int lo, int hi) {
 // aux should be a copy of c.
 template <class Container>
 void merge(Container& c, Container& aux, int lo, int mid, int hi) {
-  for (int i = lo; i <= hi; ++i) { aux[i] = c[i]; }
+  for (int i = lo; i <= hi; ++i) {
+    aux[i] = c[i];
+  }
   int left = lo;
   int right = mid + 1;
 
   for (int i = lo; i <= hi; ++i) {
-    if (left > mid) { c[i] = aux[right++]; }
-    else if (right > hi) { c[i] = aux[left++]; }
-    else if (aux[left] < aux[right]) { c[i] = aux[left++]; }
-    else { c[i] = aux[right++]; }
+    if (left > mid) {
+      c[i] = aux[right++];
+    } else if (right > hi) {
+      c[i] = aux[left++];
+    } else if (aux[left] < aux[right]) {
+      c[i] = aux[left++];
+    } else {
+      c[i] = aux[right++];
+    }
   }
 }
 
@@ -114,7 +130,9 @@ int partition(Container& c, int lo, int hi) {
   while (i <= j) {
     while (c[i] < c[lo] && i <= hi) { ++i; }
     while (c[j] > c[lo] && j >= lo) { --j; }
-    if (i < j) { std::swap(c[i], c[j]); }
+    if (i < j) {
+      std::swap(c[i], c[j]);
+    }
   }
 
   std::swap(c[lo], c[j]);
@@ -135,14 +153,23 @@ void quick_sort(Container& c, int lo, int hi) {
   // with c[lo] so that c[lo], as the p value for partitioning,
   // can be close to the median value within [lo, hi].
   int mid = (lo + hi) / 2;
-  if (c[lo] <= c[mid] && c[mid] <= c[hi]) { std::swap(c[lo], c[mid]); }
-  if (c[hi] <= c[mid] && c[mid] <= c[lo]) { std::swap(c[lo], c[mid]); }
-  if (c[lo] <= c[hi] && c[hi] <= c[mid]) { std::swap(c[lo], c[hi]); }
-  if (c[mid] <= c[hi] && c[hi] <= c[lo]) { std::swap(c[lo], c[hi]); }
+  if (c[lo] <= c[mid] && c[mid] <= c[hi]) {
+    std::swap(c[lo], c[mid]);
+  } else if (c[hi] <= c[mid] && c[mid] <= c[lo]) {
+    std::swap(c[lo], c[mid]);
+  } else if (c[lo] <= c[hi] && c[hi] <= c[mid]) {
+    std::swap(c[lo], c[hi]);
+  } else if (c[mid] <= c[hi] && c[hi] <= c[lo]) {
+    std::swap(c[lo], c[hi]);
+  }
 
   int p = partition(c, lo, hi);
-  if (p > lo) { quick_sort(c, lo, p - 1); }
-  if (p < hi) { quick_sort(c, p + 1, hi); }
+  if (p > lo) {
+    quick_sort(c, lo, p - 1);
+  }
+  if (p < hi) {
+    quick_sort(c, p + 1, hi);
+  }
 }
 
 }
