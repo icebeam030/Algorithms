@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <vector>
 
 namespace Sorting
 {
@@ -27,11 +28,8 @@ template <class Container>
 void insertion_sort(Container& c, int lo, int hi) {
   for (int i = lo + 1; i <= hi; ++i) {
     for (int j = i; j > lo; --j) {
-      if (c[j - 1] > c[j]) {
-        std::swap(c[j], c[j - 1]);
-      } else {
-        break;
-      }
+      if (c[j - 1] > c[j]) { std::swap(c[j], c[j - 1]); }
+      else { break; }
     }
   }
 }
@@ -47,9 +45,7 @@ void shell_sort(Container& c, int lo, int hi) {
   while (h >= 1) {
     for (int i = lo + h; i <= hi; ++i) {
       for (int j = i; j >= lo + h; j -= h) {
-        if (c[j - h] > c[j]) {
-          std::swap(c[j], c[j - h]);
-        }
+        if (c[j - h] > c[j]) { std::swap(c[j], c[j - h]); }
       }
     }
     h /= 3;
@@ -76,25 +72,15 @@ void shuffle(Container& container, int lo, int hi) {
 // aux should be a copy of c.
 template <class Container>
 void merge(Container& c, Container& aux, int lo, int mid, int hi) {
-  for (int i = lo; i <= hi; ++i) {
-    aux[i] = c[i];
-  }
+  for (int i = lo; i <= hi; ++i) { aux[i] = c[i]; }
   int left = lo;
   int right = mid + 1;
 
   for (int i = lo; i <= hi; ++i) {
-    if (left > mid) {
-      c[i] = aux[right++];
-    }
-    else if (right > hi) {
-      c[i] = aux[left++];
-    }
-    else if (aux[left] < aux[right]) {
-      c[i] = aux[left++];
-    }
-    else {
-      c[i] = aux[right++];
-    }
+    if (left > mid) { c[i] = aux[right++]; }
+    else if (right > hi) { c[i] = aux[left++]; }
+    else if (aux[left] < aux[right]) { c[i] = aux[left++]; }
+    else { c[i] = aux[right++]; }
   }
 }
 
@@ -115,12 +101,13 @@ void merge_sort(Container& c, Container& aux, int lo, int hi) {
   merge(c, aux, lo, mid, hi);
 }
 
-// Randomly pick an element x between [lo, hi] of the container, and
-// partition c in place, so that items to the left of x are all smaller
-// than x, and items to the right of x are all greater than or equal to x.
-// Return index of x after partition.
+// Randomly pick an element p between [lo, hi] of the container, and
+// partition c in place, so that items to the left of p are all smaller
+// than p, and items to the right of p are all greater than or equal to p.
+// Return index of p after partition.
 template <class Container>
 int partition(Container& c, int lo, int hi) {
+  // We pick c[lo] as p because [lo, hi] is already shuffled
   int i = lo + 1;
   int j = hi;
 
@@ -139,9 +126,23 @@ int partition(Container& c, int lo, int hi) {
 template <class Container>
 void quick_sort(Container& c, int lo, int hi) {
   if (hi <= lo) { return; }
-  int x = partition(c, lo, hi);
-  if (x > lo) { quick_sort(c, lo, x - 1); }
-  if (x < hi) { quick_sort(c, x + 1, hi); }
+  if (hi - lo < 10) {
+    insertion_sort(c, lo, hi);
+    return;
+  }
+
+  // Find the median value among lo, mid and hi, and swap it
+  // with c[lo] so that c[lo], as the p value for partitioning,
+  // can be close to the median value within [lo, hi].
+  int mid = (lo + hi) / 2;
+  if (c[lo] <= c[mid] && c[mid] <= c[hi]) { std::swap(c[lo], c[mid]); }
+  if (c[hi] <= c[mid] && c[mid] <= c[lo]) { std::swap(c[lo], c[mid]); }
+  if (c[lo] <= c[hi] && c[hi] <= c[mid]) { std::swap(c[lo], c[hi]); }
+  if (c[mid] <= c[hi] && c[hi] <= c[lo]) { std::swap(c[lo], c[hi]); }
+
+  int p = partition(c, lo, hi);
+  if (p > lo) { quick_sort(c, lo, p - 1); }
+  if (p < hi) { quick_sort(c, p + 1, hi); }
 }
 
 }
