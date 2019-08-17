@@ -56,7 +56,6 @@ void shell_sort(Container& c, int lo, int hi) {
         }
       }
     }
-
     h /= 3;
   }
 }
@@ -118,25 +117,45 @@ void merge_sort(Container& c, Container& aux, int lo, int hi) {
 }
 
 // Randomly pick an element p between [lo, hi] of the container, and
-// partition c in place, so that items to the left of p are all smaller
-// than p, and items to the right of p are all greater than or equal to p.
+// partition c in place, so that items to the left of p are all smaller than
+// or equal to p, and items to the right of p are all greater than or equal to p.
 // Return index of p after partition.
 template <class Container>
 int partition(Container& c, int lo, int hi) {
-  // We pick c[lo] as p because [lo, hi] is already shuffled
+  // We pick c[lo] as p because [lo, hi] is already shuffled.
   int i = lo + 1;
   int j = hi;
 
-  while (i <= j) {
+  while (true) {
     while (c[i] < c[lo] && i <= hi) { ++i; }
-    while (c[j] > c[lo] && j >= lo) { --j; }
-    if (i < j) {
-      std::swap(c[i], c[j]);
-    }
+    while (c[j] > c[lo]) { --j; }
+    if (i >= j) { break; }
+    std::swap(c[i++], c[j--]);
   }
 
   std::swap(c[lo], c[j]);
   return j;
+}
+
+// Return the k'th smallest element in c, without sorting c.
+// Container will be shuffled. k is within [1, c.size()].
+template <class Container, class T>
+T quick_select(Container& c, int k) {
+  int lo = 0;
+  int hi = c.size() - 1;
+  shuffle(c, lo, hi);
+
+  while (lo < hi) {
+    int p = partition(c, lo, hi);
+    if (p == k - 1) {
+      return c[p];
+    } else if (p > k - 1) {
+      hi = p - 1;
+    } else {
+      lo = p + 1;
+    }
+  }
+  return c[k - 1];
 }
 
 // Quick sort the container in place within [lo, hi].
@@ -163,12 +182,61 @@ void quick_sort(Container& c, int lo, int hi) {
     std::swap(c[lo], c[hi]);
   }
 
+  // Recursively sort the 2 partitions
   int p = partition(c, lo, hi);
   if (p > lo) {
     quick_sort(c, lo, p - 1);
   }
   if (p < hi) {
     quick_sort(c, p + 1, hi);
+  }
+}
+
+// Quick sort the container in place within [lo, hi].
+// The container must be shuffled before sorting.
+// Quicker than normal 2-way quick sort for typical inputs
+// where there are many duplicate keys.
+template <class Container>
+void three_way_quick_sort(Container& c, int lo, int hi) {
+  if (hi <= lo) { return; }
+  if (hi - lo < 10) {
+    insertion_sort(c, lo, hi);
+    return;
+  }
+
+  // Find the median value among lo, mid and hi, and swap it
+  // with c[lo] so that c[lo], as the p value for partitioning,
+  // can be close to the median value within [lo, hi].
+  int mid = (lo + hi) / 2;
+  if (c[lo] <= c[mid] && c[mid] <= c[hi]) {
+    std::swap(c[lo], c[mid]);
+  } else if (c[hi] <= c[mid] && c[mid] <= c[lo]) {
+    std::swap(c[lo], c[mid]);
+  } else if (c[lo] <= c[hi] && c[hi] <= c[mid]) {
+    std::swap(c[lo], c[hi]);
+  } else if (c[mid] <= c[hi] && c[hi] <= c[lo]) {
+    std::swap(c[lo], c[hi]);
+  }
+
+  int less = lo;
+  int greater = hi;
+  int i = lo + 1;
+
+  while (i <= greater) {
+    if (c[i] == c[less]) {
+      ++i;
+    } else if (c[i] < c[less]) {
+      std::swap(c[i++], c[less++]);
+    } else {
+      std::swap(c[i], c[greater--]);
+    }
+  }
+
+  if (less > lo) {
+    quick_sort(c, lo, less - 1);
+  }
+  if (greater < hi) {
+    quick_sort(c, greater + 1, hi);
   }
 }
 
