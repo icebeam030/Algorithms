@@ -1,13 +1,12 @@
 #pragma once
 
-#include <algorithm>
 #include <random>
 #include <chrono>
+#include <vector>
 
 namespace Sorting
 {
-// The containers should have a size() member function,
-// and have random access iterators.
+// All containers should have random access iterators.
 
 // Return index of val within [lo, hi] of the container, return -1 if not found.
 // The range [lo, hi] should be sorted.
@@ -26,12 +25,13 @@ int binary_search(const Container& c, int lo, int hi, const T& val) {
   return -1;
 }
 
-// Sort the container in place within [lo, hi]
+// Sort the container in place within [lo, hi].
+// Good for small containers.
 template <class Container>
 void insertion_sort(Container& c, int lo, int hi) {
   for (int i = lo + 1; i <= hi; ++i) {
     for (int j = i; j > lo; --j) {
-      if (c[j - 1] > c[j]) {
+      if (c[j] < c[j - 1]) {
         std::swap(c[j], c[j - 1]);
       } else {
         break;
@@ -40,7 +40,8 @@ void insertion_sort(Container& c, int lo, int hi) {
   }
 }
 
-// Shell sort the container in place within [lo, hi]
+// Shell sort the container in place within [lo, hi].
+// Good for medium to large containers.
 template <class Container>
 void shell_sort(Container& c, int lo, int hi) {
   int h = 1;
@@ -51,7 +52,7 @@ void shell_sort(Container& c, int lo, int hi) {
   while (h >= 1) {
     for (int i = lo + h; i <= hi; ++i) {
       for (int j = i; j >= lo + h; j -= h) {
-        if (c[j - h] > c[j]) {
+        if (c[j] < c[j - h]) {
           std::swap(c[j], c[j - h]);
         }
       }
@@ -76,8 +77,7 @@ void shuffle(Container& container, int lo, int hi) {
 }
 
 // Merge 2 sorted parts of [lo, mid] and [mid + 1, hi] of the container
-// into sorted range of [lo, hi] in place.
-// aux should be a copy of c.
+// into sorted range of [lo, hi] in place. aux should be a copy of c.
 template <class Container>
 void merge(Container& c, Container& aux, int lo, int mid, int hi) {
   for (int i = lo; i <= hi; ++i) {
@@ -138,7 +138,8 @@ int partition(Container& c, int lo, int hi) {
 }
 
 // Return the k'th smallest element in c, without sorting c.
-// Container will be shuffled. k is within [1, c.size()].
+// Container will be shuffled and should have a size() member function.
+// k should be within [1, c.size()].
 template <class Container, class T>
 T quick_select(Container& c, int k) {
   int lo = 0;
@@ -204,9 +205,6 @@ void three_way_quick_sort(Container& c, int lo, int hi) {
     return;
   }
 
-  // Find the median value among lo, mid and hi, and swap it
-  // with c[lo] so that c[lo], as the p value for partitioning,
-  // can be close to the median value within [lo, hi].
   int mid = (lo + hi) / 2;
   if (c[lo] <= c[mid] && c[mid] <= c[hi]) {
     std::swap(c[lo], c[mid]);
@@ -239,5 +237,47 @@ void three_way_quick_sort(Container& c, int lo, int hi) {
     quick_sort(c, greater + 1, hi);
   }
 }
+
+// A priority queue that uses a binary heap to store elements of type T,
+// and can pop out the maximum element.
+template <class T>
+class PriorityQueue {
+private:
+  std::vector<T> heap;
+  void swim(int i) {
+    while (i > 0 && heap[i] > heap[(i - 1) / 2]) {
+      std::swap(heap[i], heap[(i - 1) / 2]);
+      i = (i - 1) / 2;
+    }
+  }
+  void sink(int i) {
+    while (2 * i + 1 < heap.size()) {
+      int larger_child = 2 * i + 1;
+      if (2 * i + 2 < heap.size() && heap[2 * i + 1] < heap[2 * i + 2]) {
+        ++larger_child;
+      }
+      if (heap[i] >= heap[larger_child]) {
+        break;
+      }
+      std::swap(heap[i], heap[larger_child]);
+      i = larger_child;
+    }
+  }
+public:
+  void insert(const T& data) {
+    heap.push_back(data);
+    swim(heap.size() - 1);
+  }
+  T pop_max() {
+    T data = heap[0];
+    std::swap(heap[0], heap[heap.size() - 1]);
+    heap.pop_back();
+    sink(0);
+    return data;
+  }
+  bool is_empty() const {
+    return heap.empty();
+  }
+};
 
 }
