@@ -152,11 +152,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Algorithms.cpp" />
+    <ClCompile Include="AStar.cpp" />
     <ClCompile Include="Percolation.cpp" />
     <ClCompile Include="PercolationStats.cpp" />
     <ClCompile Include="UnionFind.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AStar.h" />
     <ClInclude Include="Percolation.h" />
     <ClInclude Include="PercolationStats.h" />
     <ClInclude Include="ResizingArrays.h" />

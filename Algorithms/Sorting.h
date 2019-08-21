@@ -239,28 +239,28 @@ void three_way_quick_sort(Container& c, int lo, int hi) {
 }
 
 // A priority queue that uses a binary heap to store elements of type T,
-// and can pop out the maximum element.
+// and can pop out the minimum element.
 template <class T>
-class PriorityQueue {
+class MinPriorityQueue {
 private:
   std::vector<T> heap;
   void swim(int i) {
-    while (i > 0 && heap[i] > heap[(i - 1) / 2]) {
+    while (i > 0 && heap[i] < heap[(i - 1) / 2]) {
       std::swap(heap[i], heap[(i - 1) / 2]);
       i = (i - 1) / 2;
     }
   }
   void sink(int i) {
     while (2 * i + 1 < heap.size()) {
-      int larger_child = 2 * i + 1;
-      if (2 * i + 2 < heap.size() && heap[2 * i + 1] < heap[2 * i + 2]) {
-        ++larger_child;
+      int smaller_child = 2 * i + 1;
+      if (2 * i + 2 < heap.size() && heap[2 * i + 2] < heap[2 * i + 1]) {
+        ++smaller_child;
       }
-      if (heap[i] >= heap[larger_child]) {
+      if (heap[i] <= heap[smaller_child]) {
         break;
       }
-      std::swap(heap[i], heap[larger_child]);
-      i = larger_child;
+      std::swap(heap[i], heap[smaller_child]);
+      i = smaller_child;
     }
   }
 public:
@@ -268,7 +268,7 @@ public:
     heap.push_back(data);
     swim(heap.size() - 1);
   }
-  T pop_max() {
+  T pop_min() {
     T data = heap[0];
     std::swap(heap[0], heap[heap.size() - 1]);
     heap.pop_back();
