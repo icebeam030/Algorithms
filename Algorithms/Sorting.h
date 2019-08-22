@@ -8,6 +8,7 @@ namespace Sorting
 {
 // All containers should have random access iterators.
 
+
 // Return index of val within [lo, hi] of the container, return -1 if not found.
 // The range [lo, hi] should be sorted.
 template <class Container, class T>
@@ -25,6 +26,7 @@ int binary_search(const Container& c, int lo, int hi, const T& val) {
   return -1;
 }
 
+
 // Sort the container in place within [lo, hi].
 // Good for small containers.
 template <class Container>
@@ -39,6 +41,7 @@ void insertion_sort(Container& c, int lo, int hi) {
     }
   }
 }
+
 
 // Shell sort the container in place within [lo, hi].
 // Good for medium to large containers.
@@ -61,6 +64,7 @@ void shell_sort(Container& c, int lo, int hi) {
   }
 }
 
+
 // Shuffle the container within [lo, hi]
 template <class Container>
 void shuffle(Container& container, int lo, int hi) {
@@ -75,6 +79,7 @@ void shuffle(Container& container, int lo, int hi) {
     swap(container[i], container[random]);
   }
 }
+
 
 // Merge 2 sorted parts of [lo, mid] and [mid + 1, hi] of the container
 // into sorted range of [lo, hi] in place. aux should be a copy of c.
@@ -99,10 +104,13 @@ void merge(Container& c, Container& aux, int lo, int mid, int hi) {
   }
 }
 
+
 // Sort the container within [lo, hi]. aux should be a copy of c.
 template <class Container>
 void merge_sort(Container& c, Container& aux, int lo, int hi) {
-  if (hi <= lo) { return; }
+  if (hi <= lo) {
+    return;
+  }
   if (hi - lo < 7) {
     insertion_sort(c, lo, hi);
     return;
@@ -112,9 +120,12 @@ void merge_sort(Container& c, Container& aux, int lo, int hi) {
   merge_sort(c, aux, lo, mid);
   merge_sort(c, aux, mid + 1, hi);
 
-  if (c[mid] <= c[mid + 1]) { return; }
+  if (c[mid] <= c[mid + 1]) {
+    return;
+  }
   merge(c, aux, lo, mid, hi);
 }
+
 
 // Randomly pick an element p between [lo, hi] of the container, and
 // partition c in place, so that items to the left of p are all smaller than
@@ -127,15 +138,22 @@ int partition(Container& c, int lo, int hi) {
   int j = hi;
 
   while (true) {
-    while (c[i] < c[lo] && i <= hi) { ++i; }
-    while (c[j] > c[lo]) { --j; }
-    if (i >= j) { break; }
+    while (c[i] < c[lo] && i <= hi) {
+      ++i;
+    }
+    while (c[j] > c[lo]) {
+      --j;
+    }
+    if (i >= j) {
+      break;
+    }
     std::swap(c[i++], c[j--]);
   }
 
   std::swap(c[lo], c[j]);
   return j;
 }
+
 
 // Return the k'th smallest element in c, without sorting c.
 // Container will be shuffled and should have a size() member function.
@@ -159,11 +177,14 @@ T quick_select(Container& c, int k) {
   return c[k - 1];
 }
 
+
 // Quick sort the container in place within [lo, hi].
 // The container must be shuffled before sorting.
 template <class Container>
 void quick_sort(Container& c, int lo, int hi) {
-  if (hi <= lo) { return; }
+  if (hi <= lo) {
+    return;
+  }
   if (hi - lo < 10) {
     insertion_sort(c, lo, hi);
     return;
@@ -193,13 +214,16 @@ void quick_sort(Container& c, int lo, int hi) {
   }
 }
 
+
 // Quick sort the container in place within [lo, hi].
 // The container must be shuffled before sorting.
 // Quicker than normal 2-way quick sort for typical inputs
 // where there are many duplicate keys.
 template <class Container>
 void three_way_quick_sort(Container& c, int lo, int hi) {
-  if (hi <= lo) { return; }
+  if (hi <= lo) {
+    return;
+  }
   if (hi - lo < 10) {
     insertion_sort(c, lo, hi);
     return;
@@ -238,6 +262,7 @@ void three_way_quick_sort(Container& c, int lo, int hi) {
   }
 }
 
+
 // A priority queue that uses a binary heap to store elements of type T,
 // and can pop out the minimum element.
 template <class T>
@@ -251,9 +276,9 @@ private:
     }
   }
   void sink(int i) {
-    while (2 * i + 1 < heap.size()) {
+    while (2 * i + 1 < static_cast<int>(heap.size())) {
       int smaller_child = 2 * i + 1;
-      if (2 * i + 2 < heap.size() && heap[2 * i + 2] < heap[2 * i + 1]) {
+      if (2 * i + 2 < static_cast<int>(heap.size()) && heap[2 * i + 2] < heap[2 * i + 1]) {
         ++smaller_child;
       }
       if (heap[i] <= heap[smaller_child]) {
@@ -264,7 +289,7 @@ private:
     }
   }
 public:
-  void insert(const T& data) {
+  void push(const T& data) {
     heap.push_back(data);
     swim(heap.size() - 1);
   }

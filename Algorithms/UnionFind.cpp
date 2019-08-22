@@ -50,7 +50,9 @@ void UnionFind::connect(int a, int b) {
 
   int i = get_root(a);
   int j = get_root(b);
-  if (i == j) { return; }
+  if (i == j) {
+    return;
+  }
 
   // If the tree containing a is larger
   if (size[i] > size[j]) {

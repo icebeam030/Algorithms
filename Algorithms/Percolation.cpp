@@ -37,7 +37,9 @@ void Percolation::open(int row, int col) {
     throw invalid_argument("Percolation: row and col should be within [1, N]!");
   }
 
-  if (is_open(row, col)) { return; }
+  if (is_open(row, col)) {
+    return;
+  }
 
   // Convert row and col to index in the grid
   int i = (row - 1) * N + col - 1;
