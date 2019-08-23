@@ -172,12 +172,12 @@ public:
     return number_of_items;
   }
 
-  // Beginning iterator
+  // Beginning iterator from start to end
   Iterator begin() const {
     return Iterator(head);
   }
 
-  // Ending iterator
+  // Ending iterator from start to end
   Iterator end() const {
     return Iterator(nullptr);
   }

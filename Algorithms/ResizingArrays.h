@@ -198,12 +198,12 @@ public:
     return capacity;
   }
 
-  // Beginning iterator
+  // Beginning iterator from start to end
   Iterator begin() const {
     return Iterator(array, head, capacity);
   }
 
-  // Ending iterator
+  // Ending iterator from start to end
   Iterator end() const {
     return Iterator(array, tail + 1, capacity);
   }
@@ -335,12 +335,12 @@ public:
     return capacity;
   }
 
-  // Beginning iterator
+  // Beginning iterator, iterates randomly
   Iterator begin() const {
     return Iterator(array, 0, number_of_items);
   }
 
-  // Ending iterator
+  // Ending iterator, iterates randomly
   Iterator end() const {
     return Iterator(array, -1, number_of_items);
   }
