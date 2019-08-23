@@ -293,6 +293,10 @@ public:
     heap.push_back(data);
     swim(heap.size() - 1);
   }
+  T min() {
+    T data = heap[0];
+    return data;
+  }
   T pop_min() {
     T data = heap[0];
     std::swap(heap[0], heap[heap.size() - 1]);

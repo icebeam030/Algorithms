@@ -5,25 +5,34 @@
 
 using namespace std;
 
-// The Board class
+// Class Board
 Board::Board(const vector<int>& tiles)
-  : tiles(tiles), N(sqrt(tiles.size())) {}
+  : tiles(tiles), N(static_cast<int>(sqrt(tiles.size()))) {}
+
+Board::Board(const Board& other)
+  : tiles(other.tiles), N(other.N) {}
+
+Board& Board::operator=(const Board& other) {
+  tiles = other.tiles;
+  N = other.N;
+  return *this;
+}
 
 int Board::dimension() const {
   return N;
 }
 
 typename string Board::string_representation() const {
-  string board_string;
-  board_string += to_string(N) + "\n";
+  string string_of_board;
+  string_of_board += to_string(N) + "\n";
 
   for (int i = 0; i < N; ++i) {
     for (int j = 0; j < N; ++j) {
-      board_string += to_string(tiles[i * N + j]) + " ";
+      string_of_board += to_string(tiles[i * N + j]) + " ";
     }
-    board_string += "\n";
+    string_of_board += "\n";
   }
-  return board_string;
+  return string_of_board;
 }
 
 int Board::hamming() const {
@@ -39,7 +48,9 @@ int Board::hamming() const {
 int Board::manhattan() const {
   int distance = 0;
   for (int i = 0; i < N * N; ++i) {
-    if (tiles[i] == 0) { continue; }
+    if (tiles[i] == 0) {
+      continue;
+    }
     int row_distance = abs(i / N - (tiles[i] - 1) / N);
     int col_distance = abs(i % N - (tiles[i] - 1) % N);
     distance += row_distance + col_distance;
@@ -51,7 +62,7 @@ bool Board::is_goal() const {
   return hamming() == 0;
 }
 
-bool Board::equals(Board other) const {
+bool Board::equals(const Board& other) const {
   return string_representation() == other.string_representation();
 }
 
@@ -71,27 +82,31 @@ typename vector<Board> Board::neighbours() const {
 
   // A neighbour is created by swapping 0 with its adjacent tile
   if (row > 1) {
-    vector<int> new_tiles(tiles);
-    swap(new_tiles[index], new_tiles[index - N]);
-    Board neighbour(new_tiles);
+    vector<int> neighbour_tiles(tiles);
+    swap(neighbour_tiles[index], neighbour_tiles[index - N]);
+
+    Board neighbour(neighbour_tiles);
     neighbours.push_back(neighbour);
   }
   if (row < N) {
-    vector<int> new_tiles(tiles);
-    swap(new_tiles[index], new_tiles[index + N]);
-    Board neighbour(new_tiles);
+    vector<int> neighbour_tiles(tiles);
+    swap(neighbour_tiles[index], neighbour_tiles[index + N]);
+
+    Board neighbour(neighbour_tiles);
     neighbours.push_back(neighbour);
   }
   if (col > 1) {
-    vector<int> new_tiles(tiles);
-    swap(new_tiles[index], new_tiles[index - 1]);
-    Board neighbour(new_tiles);
+    vector<int> neighbour_tiles(tiles);
+    swap(neighbour_tiles[index], neighbour_tiles[index - 1]);
+
+    Board neighbour(neighbour_tiles);
     neighbours.push_back(neighbour);
   }
   if (col < N) {
-    vector<int> new_tiles(tiles);
-    swap(new_tiles[index], new_tiles[index + 1]);
-    Board neighbour(new_tiles);
+    vector<int> neighbour_tiles(tiles);
+    swap(neighbour_tiles[index], neighbour_tiles[index + 1]);
+
+    Board neighbour(neighbour_tiles);
     neighbours.push_back(neighbour);
   }
 
@@ -99,22 +114,89 @@ typename vector<Board> Board::neighbours() const {
 }
 
 typename Board Board::twin() const {
-  vector<int> new_tiles(tiles);
+  vector<int> twin_tiles(tiles);
+
   int i = 0;
-  int j = new_tiles.size() - 1;
-  while (new_tiles[i] == 0) { ++i; }
-  while (new_tiles[j] == 0) { --j; }
-  swap(new_tiles[i], new_tiles[j]);
-  Board twin(new_tiles);
+  int j = twin_tiles.size() - 1;
+  while (twin_tiles[i] == 0) {
+    ++i;
+  }
+  while (twin_tiles[j] == 0) {
+    --j;
+  }
+  swap(twin_tiles[i], twin_tiles[j]);
+
+  Board twin(twin_tiles);
   return twin;
 }
 
 
-// The Solver class
-Solver::Solver(Board initial) {
-  solve(initial);
+// Class Solver
+Solver::Solver(const Board& initial) {
+  Node node(initial, nullptr, 0, initial.manhattan());
+  pq.push(node);
+  game_tree.push_back(node);
+  Node node2(initial.twin(), nullptr, 0, initial.twin().manhattan());
+  pq2.push(node2);
+  game_tree2.push_back(node2);
+
+  a_star();
 }
 
-void Solver::solve(Board initial) {
-  pq.insert()
+void Solver::a_star() {
+  while (true) {
+    game_tree.push_back(pq.pop_min());
+    game_tree2.push_back(pq2.pop_min());
+    Node& node = game_tree.back();
+    Node& node2 = game_tree2.back();
+
+    if (node.board.is_goal()) {
+      solvable = true;
+      number_of_moves = node.moves;
+      solution_boards.push_front(node.board);
+
+      Node* prev = node.prev;
+      while (prev != nullptr) {
+        solution_boards.push_front(prev->board);
+        prev = prev->prev;
+      }
+
+      break;
+    }
+    if (node2.board.is_goal()) {
+      solvable = false;
+      number_of_moves = -1;
+      break;
+    }
+
+    vector<Board> boards = node.board.neighbours();
+    for (Board board : boards) {
+      if (node.prev != nullptr && board.equals(node.prev->board)) {
+        continue;
+      }
+      Node new_node(board, &node, node.moves + 1, board.manhattan());
+      pq.push(new_node);
+    }
+
+    vector<Board> boards2 = node2.board.neighbours();
+    for (Board board2 : boards2) {
+      if (node2.prev != nullptr && board2.equals(node2.prev->board)) {
+        continue;
+      }
+      Node new_node(board2, &node2, node2.moves + 1, board2.manhattan());
+      pq2.push(new_node);
+    }
+  }
+}
+
+int Solver::min_moves() const {
+  return number_of_moves;
+}
+
+bool Solver::is_solvable() const {
+  return solvable;
+}
+
+typename deque<Board> Solver::solution() {
+  return solution_boards;
 }
