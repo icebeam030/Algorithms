@@ -2,6 +2,7 @@
 #include "AStar.h"
 
 using namespace std;
+using namespace PuzzleBoard;
 
 // The Board class
 Board::Board(const vector<int>& tiles)
@@ -182,10 +183,15 @@ bool Solver::is_solvable() const {
   return solvable;
 }
 
-typename vector<Board> Solver::solution() const {
-  vector<Board> solution_boards;
-  for (const Node& node : game_tree) {
-    solution_boards.push_back(node.board);
+typename deque<Board> Solver::solution() const {
+  deque<Board> solution_boards;
+  if (is_solvable()) {
+    Node goal = game_tree.back();
+    solution_boards.push_front(goal.board);
+    while (goal.prev != nullptr) {
+      goal = *(goal.prev);
+      solution_boards.push_front(goal.board);
+    }
   }
   return solution_boards;
 }

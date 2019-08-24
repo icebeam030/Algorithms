@@ -5,6 +5,8 @@
 #include <deque>
 #include "Sorting.h"
 
+namespace PuzzleBoard
+{
 // The board representing the sliding puzzle problem
 class Board {
 private:
@@ -83,5 +85,7 @@ public:
 
   // Sequence of boards in a shortest solution
   // Return an empty vector if the initial board is not solvable
-  typename std::vector<Board> solution() const;
+  typename std::deque<Board> solution() const;
 };
+
+}
