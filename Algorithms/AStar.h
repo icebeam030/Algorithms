@@ -12,6 +12,7 @@ class Board {
 private:
   std::vector<int> tiles;
   int N;
+
 public:
   // Create a board from an array of tiles from 0 to N^2 - 1, where
   // tiles[i] is the tile at position i, and 0 represents the empty tile.
@@ -64,8 +65,8 @@ private:
     }
   };
 
-  bool solvable;
-  int number_of_moves;
+  bool solvable = false;
+  int number_of_moves = -1;
   Sorting::MinPriorityQueue<Node> pq;
   Sorting::MinPriorityQueue<Node> pq2;
   std::deque<Node> game_tree;
@@ -74,6 +75,7 @@ private:
   void a_star();
 
 public:
+  // Create a solver for the initial board passed in
   Solver(const Board& initial);
 
   // Is the initial board solvable?

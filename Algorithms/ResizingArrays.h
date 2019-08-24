@@ -91,12 +91,12 @@ public:
     return capacity;
   }
 
-  // Beginning iterator
+  // Iterator pointing to the top of the stack
   Iterator begin() const {
     return Iterator(array, number_of_items - 1);
   }
 
-  // Ending iterator
+  // Iterator pointing to the one position below the bottom
   Iterator end() const {
     return Iterator(array, -1);
   }
@@ -198,12 +198,12 @@ public:
     return capacity;
   }
 
-  // Beginning iterator from start to end
+  // Iterator pointing to the front
   Iterator begin() const {
     return Iterator(array, head, capacity);
   }
 
-  // Ending iterator from start to end
+  // Iterator pointing to one position after the back
   Iterator end() const {
     return Iterator(array, tail + 1, capacity);
   }

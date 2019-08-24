@@ -288,14 +288,14 @@ private:
       i = smaller_child;
     }
   }
+
 public:
   void push(const T& data) {
     heap.push_back(data);
     swim(heap.size() - 1);
   }
   T min() {
-    T data = heap[0];
-    return data;
+    return heap[0];
   }
   T pop_min() {
     T data = heap[0];

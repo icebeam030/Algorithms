@@ -78,12 +78,12 @@ public:
     return number_of_items;
   }
 
-  // Beginning iterator
+  // Iterator pointing to the top of the stack
   Iterator begin() const {
     return Iterator(head);
   }
 
-  // Ending iterator
+  // Iterator pointing to one position below the bottom
   Iterator end() const {
     return Iterator(nullptr);
   }
@@ -100,7 +100,7 @@ private:
   };
 
   Node* head = nullptr;
-  Node* tail = head;
+  Node* tail = nullptr;
   int number_of_items = 0;
 
   class Iterator {
@@ -172,12 +172,12 @@ public:
     return number_of_items;
   }
 
-  // Beginning iterator from start to end
+  // Iterator pointing to the front
   Iterator begin() const {
     return Iterator(head);
   }
 
-  // Ending iterator from start to end
+  // Iterator pointing to one position after the back
   Iterator end() const {
     return Iterator(nullptr);
   }
@@ -310,12 +310,12 @@ public:
     return number_of_items;
   }
 
-  // Beginning iterator from front to back
+  // Iterator pointing to the front
   Iterator begin() const {
     return Iterator(head);
   }
 
-  // Ending iterator from front to back
+  // Iterator pointing to one position after back
   Iterator end() const {
     return Iterator(nullptr);
   }

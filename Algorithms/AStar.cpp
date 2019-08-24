@@ -22,6 +22,7 @@ typename string Board::string_representation() const {
     }
     string_of_board += "\n";
   }
+
   return string_of_board;
 }
 
@@ -143,8 +144,6 @@ void Solver::a_star() {
       break;
     }
     if (node2.board.is_goal()) {
-      solvable = false;
-      number_of_moves = -1;
       game_tree.clear();
       break;
     }
@@ -185,6 +184,7 @@ bool Solver::is_solvable() const {
 
 typename deque<Board> Solver::solution() const {
   deque<Board> solution_boards;
+
   if (is_solvable()) {
     Node goal = game_tree.back();
     solution_boards.push_front(goal.board);
@@ -193,5 +193,6 @@ typename deque<Board> Solver::solution() const {
       solution_boards.push_front(goal.board);
     }
   }
+
   return solution_boards;
 }
