@@ -1,22 +1,11 @@
 #include <math.h>
-#include <random>
-#include <chrono>
 #include "AStar.h"
 
 using namespace std;
 
-// Class Board
+// The Board class
 Board::Board(const vector<int>& tiles)
   : tiles(tiles), N(static_cast<int>(sqrt(tiles.size()))) {}
-
-Board::Board(const Board& other)
-  : tiles(other.tiles), N(other.N) {}
-
-Board& Board::operator=(const Board& other) {
-  tiles = other.tiles;
-  N = other.N;
-  return *this;
-}
 
 int Board::dimension() const {
   return N;
@@ -131,59 +120,55 @@ typename Board Board::twin() const {
 }
 
 
-// Class Solver
+// The Solver class
 Solver::Solver(const Board& initial) {
   Node node(initial, nullptr, 0, initial.manhattan());
-  pq.push(node);
-  game_tree.push_back(node);
   Node node2(initial.twin(), nullptr, 0, initial.twin().manhattan());
+  pq.push(node);
   pq2.push(node2);
-  game_tree2.push_back(node2);
 
   a_star();
 }
 
 void Solver::a_star() {
   while (true) {
-    game_tree.push_back(pq.pop_min());
-    game_tree2.push_back(pq2.pop_min());
-    Node& node = game_tree.back();
-    Node& node2 = game_tree2.back();
+    Node node = pq.pop_min();
+    Node node2 = pq2.pop_min();
 
     if (node.board.is_goal()) {
       solvable = true;
       number_of_moves = node.moves;
-      solution_boards.push_front(node.board);
-
-      Node* prev = node.prev;
-      while (prev != nullptr) {
-        solution_boards.push_front(prev->board);
-        prev = prev->prev;
-      }
-
+      game_tree.push_back(node);
       break;
     }
     if (node2.board.is_goal()) {
       solvable = false;
       number_of_moves = -1;
+      game_tree.clear();
       break;
     }
 
-    vector<Board> boards = node.board.neighbours();
+    game_tree.push_back(node);
+    Node& current = game_tree.back();
+
+    vector<Board> boards = current.board.neighbours();
     for (Board board : boards) {
-      if (node.prev != nullptr && board.equals(node.prev->board)) {
+      if (current.prev != nullptr && board.equals(current.prev->board)) {
         continue;
       }
-      Node new_node(board, &node, node.moves + 1, board.manhattan());
+      Node new_node(board, &current, current.moves + 1, board.manhattan());
       pq.push(new_node);
     }
 
-    vector<Board> boards2 = node2.board.neighbours();
+    game_tree2.push_back(node2);
+    Node& current2 = game_tree2.back();
+
+    vector<Board> boards2 = current2.board.neighbours();
     for (Board board2 : boards2) {
-      if (node2.prev != nullptr && board2.equals(node2.prev->board)) {
+      if (current2.prev != nullptr && board2.equals(current2.prev->board)) {
         continue;
       }
-      Node new_node(board2, &node2, node2.moves + 1, board2.manhattan());
+      Node new_node(board2, &current2, current2.moves + 1, board2.manhattan());
       pq2.push(new_node);
     }
   }
@@ -197,6 +182,10 @@ bool Solver::is_solvable() const {
   return solvable;
 }
 
-typename deque<Board> Solver::solution() {
+typename vector<Board> Solver::solution() const {
+  vector<Board> solution_boards;
+  for (const Node& node : game_tree) {
+    solution_boards.push_back(node.board);
+  }
   return solution_boards;
 }

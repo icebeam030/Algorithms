@@ -5,7 +5,7 @@
 #include <deque>
 #include "Sorting.h"
 
-// The board for the sliding puzzle problem
+// The board representing the sliding puzzle problem
 class Board {
 private:
   std::vector<int> tiles;
@@ -15,8 +15,6 @@ public:
   // tiles[i] is the tile at position i, and 0 represents the empty tile.
   // Make sure N is within [2, 128] and input is N^2 distinct integers.
   Board(const std::vector<int>& tiles);
-  Board(const Board& other);
-  Board& operator=(const Board& other);
 
   // Board dimension n
   int dimension() const;
@@ -54,17 +52,8 @@ private:
     int moves;
     int manhattan;
 
-    Node(Board board, Node* prev, int moves, int manhattan)
+    Node(const Board& board, Node* prev, int moves, int manhattan)
       : board(board), prev(prev), moves(moves), manhattan(manhattan) {}
-    Node(const Node& other)
-      : board(other.board), prev(other.prev), moves(other.moves), manhattan(other.manhattan) {}
-    Node& operator=(const Node& other) {
-      board = other.board;
-      prev = other.prev;
-      moves = other.moves;
-      manhattan = other.manhattan;
-      return *this;
-    }
     bool operator<(const Node& other) const {
       return moves + manhattan < other.moves + other.manhattan;
     }
@@ -77,9 +66,8 @@ private:
   int number_of_moves;
   Sorting::MinPriorityQueue<Node> pq;
   Sorting::MinPriorityQueue<Node> pq2;
-  std::vector<Node> game_tree;
-  std::vector<Node> game_tree2;
-  std::deque<Board> solution_boards;
+  std::deque<Node> game_tree;
+  std::deque<Node> game_tree2;
 
   void a_star();
 
@@ -94,5 +82,6 @@ public:
   int min_moves() const;
 
   // Sequence of boards in a shortest solution
-  typename std::deque<Board> solution();
+  // Return an empty vector if the initial board is not solvable
+  typename std::vector<Board> solution() const;
 };
