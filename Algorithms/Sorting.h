@@ -269,6 +269,7 @@ template <class T>
 class MinPriorityQueue {
 private:
   std::vector<T> heap;
+
   void swim(int i) {
     while (i > 0 && heap[i] < heap[(i - 1) / 2]) {
       std::swap(heap[i], heap[(i - 1) / 2]);

@@ -32,6 +32,45 @@ private:
   };
 
 public:
+  // Default constructor
+  Stack() {}
+
+  // Copy constructor
+  Stack(const Stack& other) {
+    T* data = new T[other.size()];
+    int i = -1;
+    for (const T& elem : other) {
+      data[++i] = elem;
+    }
+    for (int i = other.size() - 1; i >= 0; --i) {
+      push(data[i]);
+    }
+    delete[] data;
+  }
+
+  // Copy assignment
+  Stack& operator=(const Stack& other) {
+    if (this == &other) {
+      return *this;
+    }
+
+    while (!is_empty()) {
+      pop();
+    }
+
+    T* data = new T[other.size()];
+    int i = -1;
+    for (const T& elem : other) {
+      data[++i] = elem;
+    }
+    for (int i = other.size() - 1; i >= 0; --i) {
+      push(data[i]);
+    }
+    delete[] data;
+
+    return *this;
+  }
+
   // Destructor
   ~Stack() {
     Node* current = head;
@@ -117,6 +156,31 @@ private:
   };
 
 public:
+  // Default constructor
+  Queue() {}
+
+  // Copy constructor
+  Queue(const Queue& other) {
+    for (const T& elem : other) {
+      push(elem);
+    }
+  }
+
+  // Copy assignment
+  Queue& operator=(const Queue& other) {
+    if (this == &other) {
+      return *this;
+    }
+
+    while (!is_empty()) {
+      pop();
+    }
+    for (const T& elem : other) {
+      push(elem);
+    }
+    return *this;
+  }
+
   // Destructor
   ~Queue() {
     Node* current = head;
@@ -212,6 +276,31 @@ private:
   };
 
 public:
+  // Default constructor
+  Deque() {}
+
+  // Copy constructor
+  Deque(const Deque& other) {
+    for (const T& elem : other) {
+      push_back(elem);
+    }
+  }
+
+  // Copy assignment
+  Deque& operator=(const Deque& other) {
+    if (this == &other) {
+      return *this;
+    }
+
+    while (!is_empty()) {
+      pop_back();
+    }
+    for (const T& elem : other) {
+      push_back(elem);
+    }
+    return *this;
+  }
+
   // Destructor
   ~Deque() {
     Node* current = head;

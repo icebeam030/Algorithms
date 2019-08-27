@@ -33,6 +33,41 @@ private:
   };
 
 public:
+  // Default constructor
+  Stack() {}
+
+  // Copy constructor
+  Stack(const Stack& other) {
+    number_of_items = other.number_of_items;
+    capacity = other.capacity;
+
+    delete[] array;
+    array = new T[capacity];
+    for (const T& elem : other) {
+      array[--number_of_items] = elem;
+    }
+    number_of_items = other.number_of_items;
+  }
+
+  // Copy assignment
+  Stack& operator=(const Stack& other) {
+    if (this == &other) {
+      return *this;
+    }
+
+    number_of_items = other.number_of_items;
+    capacity = other.capacity;
+
+    delete[] array;
+    array = new T[capacity];
+    for (const T& elem : other) {
+      array[--number_of_items] = elem;
+    }
+    number_of_items = other.number_of_items;
+
+    return *this;
+  }
+
   // Destructor
   ~Stack() {
     delete[] array;
@@ -131,6 +166,45 @@ private:
   };
 
 public:
+  // Default constructor
+  Queue() {}
+
+  // Copy constructor
+  Queue(const Queue& other) {
+    number_of_items = other.number_of_items;
+    capacity = other.capacity;
+    head = 0;
+    tail = number_of_items - 1;
+
+    delete[] array;
+    array = new T[capacity];
+    int i = -1;
+    for (const T& elem : other) {
+      array[++i] = elem;
+    }
+  }
+
+  // Copy assignment
+  Queue& operator=(const Queue& other) {
+    if (this == &other) {
+      return *this;
+    }
+
+    number_of_items = other.number_of_items;
+    capacity = other.capacity;
+    head = 0;
+    tail = number_of_items - 1;
+
+    delete[] array;
+    array = new T[capacity];
+    int i = -1;
+    for (const T& elem : other) {
+      array[++i] = elem;
+    }
+
+    return *this;
+  }
+
   // Destructor
   ~Queue() {
     delete[] array;
@@ -264,6 +338,37 @@ private:
   };
 
 public:
+  // Default constructor
+  RandomisedQueue() {}
+
+  // Copy constructor
+  RandomisedQueue(const RandomisedQueue& other) {
+    number_of_items = other.number_of_items;
+    capacity = other.capacity;
+    delete[] array;
+    array = new T[capacity];
+    for (int i = 0; i < number_of_items; ++i) {
+      array[i] = other.array[i];
+    }
+  }
+
+  // Copy assignment
+  RandomisedQueue& operator=(const RandomisedQueue& other) {
+    if (this == &other) {
+      return *this;
+    }
+
+    number_of_items = other.number_of_items;
+    capacity = other.capacity;
+    delete[] array;
+    array = new T[capacity];
+    for (int i = 0; i < number_of_items; ++i) {
+      array[i] = other.array[i];
+    }
+
+    return *this;
+  }
+
   // Destructor
   ~RandomisedQueue() {
     delete[] array;
