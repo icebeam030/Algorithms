@@ -5,11 +5,12 @@
 #include <string>
 #include <vector>
 
-#include "PercolationStats.h"
+#include "UnionFind.h"
 #include "Sorting.h"
 #include "AStar.h"
 
 using namespace std;
+using namespace UnionFinds;
 using namespace Sorting;
 using namespace PuzzleBoard;
 

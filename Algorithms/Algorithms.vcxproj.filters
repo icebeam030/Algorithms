@@ -18,12 +18,6 @@
     <ClCompile Include="Algorithms.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Percolation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PercolationStats.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UnionFind.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,12 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UnionFind.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Percolation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PercolationStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ResizingArrays.h">
