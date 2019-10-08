@@ -17,12 +17,15 @@ int main() {
   cout << "Testing percolation...\n\n";
   try {
     PercolationStats p(100, 40);
+
   } catch (const invalid_argument& e) {
     cerr << "Invalid argument: " << e.what() << '\n';
     return EXIT_FAILURE;
+
   } catch (const bad_alloc& e) {
     cerr << "Memory Exception: " << e.what() << ". Try using smaller arguments.\n";
     return EXIT_FAILURE;
+
   } catch (...) {
     cerr << "Unknown Exception!";
     return EXIT_FAILURE;
