@@ -7,87 +7,94 @@
 
 namespace PuzzleBoard
 {
-// The board representing the sliding puzzle problem
-class Board {
-private:
-  std::vector<int> tiles;
-  int N;
 
-public:
-  // Create a board from an array of tiles from 0 to N^2 - 1, where
-  // tiles[i] is the tile at position i, and 0 represents the empty tile.
-  // Make sure N is within [2, 128] and input is N^2 distinct integers.
-  Board(const std::vector<int>& tiles);
+#pragma region Board
 
-  // Board dimension n
-  int dimension() const;
+    class Board {
+    public:
+        // Create a board from an array of tiles from 0 to N^2 - 1, where
+        // tiles[i] is the tile at position i, and 0 represents the empty tile.
+        // Make sure N is within [2, 128] and input is N^2 distinct integers.
+        Board(const std::vector<int>& tiles);
 
-  // String representation of this board
-  typename std::string string_representation() const;
+        // Board dimension n
+        int dimension() const;
 
-  // Number of tiles out of place
-  int hamming() const;
+        // String representation of this board
+        std::string string_representation() const;
 
-  // Sum of Manhattan distances between tiles and goal
-  int manhattan() const;
+        // Number of tiles out of place
+        int hamming() const;
 
-  // Is this board the goal board?
-  bool is_goal() const;
+        // Sum of Manhattan distances between tiles and goal
+        int manhattan() const;
 
-  // Does this board equal the other board?
-  bool equals(const Board& other) const;
+        // Is this board the goal board?
+        bool is_goal() const;
 
-  // All neighbouring boards
-  typename std::vector<Board> neighbours() const;
+        // Does this board equal the other board?
+        bool equals(const Board& other) const;
 
-  // A board that is obtained by exchanging any pair of tiles
-  typename Board twin() const;
-};
+        // All neighbouring boards
+        std::vector<Board> neighbours() const;
+
+        // A board that is obtained by exchanging any pair of tiles
+        Board twin() const;
+
+    private:
+        std::vector<int> tiles;
+        int N;
+    };
+
+#pragma endregion Board
 
 
-// Using A* search algorithm to solve the sliding puzzle problem
-class Solver {
-private:
-  class Node {
-  public:
-    Board board;
-    Node* prev;
-    int moves;
-    int manhattan;
+#pragma region A* Solver
 
-    Node(const Board& board, Node* prev, int moves, int manhattan)
-      : board(board), prev(prev), moves(moves), manhattan(manhattan) {}
-    bool operator<(const Node& other) const {
-      return moves + manhattan < other.moves + other.manhattan;
-    }
-    bool operator<=(const Node& other) const {
-      return moves + manhattan <= other.moves + other.manhattan;
-    }
-  };
+    class Solver {
+    public:
+        // Create a solver for the initial board passed in
+        Solver(const Board& initial);
 
-  bool solvable = false;
-  int number_of_moves = -1;
-  Sorting::MinPriorityQueue<Node> pq;
-  Sorting::MinPriorityQueue<Node> pq2;
-  std::deque<Node> game_tree;
-  std::deque<Node> game_tree2;
+        // Is the initial board solvable?
+        bool is_solvable() const;
 
-  void a_star();
+        // Minimum number of moves to solve the initial board.
+        // Return -1 if the initial board is not solvable.
+        int min_moves() const;
 
-public:
-  // Create a solver for the initial board passed in
-  Solver(const Board& initial);
+        // Sequence of boards in a shortest solution
+        // Return an empty vector if the initial board is not solvable
+        std::deque<Board> solution() const;
 
-  // Is the initial board solvable?
-  bool is_solvable() const;
+    private:
+        class Node {
+        public:
+            Board board;
+            Node* prev;
+            int moves;
+            int manhattan;
 
-  // Minimum number of moves to solve the initial board.
-  // Return -1 if the initial board is not solvable.
-  int min_moves() const;
+            Node(const Board& board, Node* prev, int moves, int manhattan)
+                : board(board), prev(prev), moves(moves), manhattan(manhattan) {}
+            bool operator<(const Node& other) const {
+                return moves + manhattan < other.moves + other.manhattan;
+            }
+            bool operator<=(const Node& other) const {
+                return moves + manhattan <= other.moves + other.manhattan;
+            }
+        };
 
-  // Sequence of boards in a shortest solution
-  // Return an empty vector if the initial board is not solvable
-  typename std::deque<Board> solution() const;
-};
+        bool solvable = false;
+        int number_of_moves = -1;
+        Sorting::MinPriorityQueue<Node> pq;
+        Sorting::MinPriorityQueue<Node> pq2;
+        std::deque<Node> game_tree;
+        std::deque<Node> game_tree2;
+
+        void a_star();
+    };
+
+#pragma endregion A* Solver
 
 }
